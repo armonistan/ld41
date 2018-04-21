@@ -9,6 +9,7 @@ public class PlanExecutor : MonoBehaviour {
     public List<Move> TheExecutedPlan;
 
     public List<EnemyMap> EnemyPrefabs;
+    public List<Vector3> SpawnPoints;
 
     public int CurrentYard; //TODO: Get this from a player object
 
@@ -23,9 +24,9 @@ public class PlanExecutor : MonoBehaviour {
         {
             if (move.Yard <= CurrentYard)
             {
-                foreach (EnemyType enemy in move.Enemies)
+                for (var i = 0; i < move.Enemies.Length; i++)
                 {
-                    createEnemy(enemy);//TODO: Place this logically
+                    createEnemy(move.Enemies[i], SpawnPoints[i % SpawnPoints.Count]);
                 }
 
                 TheExecutedPlan.Add(move);
@@ -36,9 +37,9 @@ public class PlanExecutor : MonoBehaviour {
         ThePlan.RemoveAll((Move move) => completedMoves.Contains(move));
 	}
 
-    private void createEnemy(EnemyType enemy)
+    private void createEnemy(EnemyType enemy, Vector3 position)
     {
         var foundEnemy = EnemyPrefabs.Find((EnemyMap map) => map.EnemyType == enemy);
-        if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab); }
+        if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab, position, Quaternion.identity); }
     }
 }
