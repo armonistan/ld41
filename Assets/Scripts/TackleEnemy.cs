@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TackleEnemy : Enemy {
-
-
     public GameObject Player;
     public int BaseSpeed = 1;
 
