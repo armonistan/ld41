@@ -40,3 +40,5 @@ ehthumbs.db
 [Dd]esktop.ini
 **/*.sln.DotSettings.user
 **/*.csproj.user
+
+*.meta
