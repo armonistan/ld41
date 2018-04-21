@@ -8,6 +8,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 {
     public enum States
     {
+		Idle,
         Running,
         Spinning
     }
@@ -18,26 +19,36 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	public KeyCode MoveForward = KeyCode.W;
 	public KeyCode MoveBackward = KeyCode.S;
 
-    public float Speed = 4;
-    public float[] SpeedClasses;
+	public States State = States.Idle;
 
-	//armon note - naming convention for privates is _variableName
-	//private SpawnControl _spawnControl;
+	//player speed
+    public float PlayerBaseSpeed = 4;
+	public float PlayerIdleSpeed = 0;
 
-	//armon note - keeping example of super sexy c# thing daniel showed me last year
-	/*
+	private float _currentPlayerSpeed = 0;
+	private Vector2 _currentPlayerVector = new Vector2();
+	private double _radAngle = 0;
+
+	//constants
+	private float _LEFT_X = -1;
+	private float _RIGHT_X = 1;
+	private float _FORWARD_Y = 1;
+	private float _BACKWARD_Y = -1;
+	private float _IDLE = 0;
+
+
+
 	public Vector2 Velocity
     {
         get
         {
-            Speed = Mathf.Clamp(SpeedClasses[CurrentSpeedClass], SpeedClasses.First(), SpeedClasses.Last());
-            return new Vector2 (Mathf.Cos (RadAngle), Mathf.Sin (RadAngle)) * Speed * Time.deltaTime;
+			return new Vector2 (Mathf.Cos (_radAngle), Mathf.Sin (_radAngle)) * _currentPlayerSpeed * Time.deltaTime;
 		}
         set
         {
-            RadAngle = Mathf.Atan2(value.y, value.x);
+            _radAngle = Mathf.Atan2(value.y, value.x);
         }
-    }*/
+    }
 
     // Use this for initialization
 	void Start () {
@@ -56,49 +67,52 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	
 	// Update is called once per frame
 	void Update () {
-		if (Time.timeScale == GameControl.Paused)
+		//might be needed later
+		/*if (Time.timeScale == GameControl.Paused)
 	    {
 	        return;
-	    }
+	    }*/
 
-	    if (_contrail)
-	    {
-	        _contrail.transform.rotation = Quaternion.AngleAxis(DegAngle + 180, Vector3.forward);
+		//left right input
+		if (Input.GetKey(MoveLeft))
+		{
+			_currentPlayerVector.x = _LEFT_X;
+		}
+		else if (Input.GetKey(MoveRight))
+		{
+			_currentPlayerVector.x = _RIGHT_X;
+		}
+		else
+		{
+			_currentPlayerVector.x = _IDLE;
+		}
 
-	        if (Input.GetKey(LeftBallSteering))
-	        {
-	            RadAngle += (BallSteeringMagnitude * Time.deltaTime);
-	            _contrail.GetComponent<SpriteRenderer>().sprite = leftSteeringContrail;
-	        }
-	        else if (Input.GetKey(RightBallSteering))
-	        {
-	            RadAngle -= (BallSteeringMagnitude * Time.deltaTime);
-	            _contrail.GetComponent<SpriteRenderer>().sprite = rightSteeringContrail;
-	        }
-	        else
-	        {
-	            _contrail.GetComponent<SpriteRenderer>().sprite = baseContrail;
-	        }
+		//forward backward input
+		if (Input.GetKey(MoveForward))
+		{
+			_currentPlayerVector.y = _FORWARD_Y;
+		}
+		else if (Input.GetKey(MoveBackward))
+		{
+			_currentPlayerVector.y = _BACKWARD_Y;
+		}
+		else
+		{
+			_currentPlayerVector.y = _IDLE;
+		}
 
-            _contrail.GetComponent<SpriteRenderer>().color = _powerupControl.GetPowerupColor(PersonalPowerupType);
-	    }
+
+		Velocity = _currentPlayerVector;
+		_currentPlayerSpeed = (_currentPlayerVector.x != 0 || _currentPlayerVector != 0) ? PlayerBaseSpeed : PlayerIdleSpeed;
 
         switch (State)
 	    {
-		case States.Idle:
+			case States.Idle:
+	            break;
+			case States.Running:
 				gameObject.transform.Translate(Velocity);
 	            break;
-	        case States.Pause:
-                if (PersonalPowerupType != PowerupControl.PowerupType.Shield && Counter > PauseFrames)
-	            {
-	                Destroy(gameObject);
-	            }
-	            else
-	            {
-	                IncrementCounter();
-	            }
-	            break;
-			case States.Bounce:
+			case States.Spinning:
 				gameObject.transform.Translate(Velocity);
                 break;
 	        default:
@@ -108,7 +122,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (Time.timeScale == GameControl.Paused)
+        /*if (Time.timeScale == GameControl.Paused)
         {
             return;
         }
@@ -128,12 +142,12 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         else if ((point = other.GetComponent<PointManiaControl>()) != null)
         {
             HandlePointMania(point);
-        }
+        }*/
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        WallControl wall;
+        /*WallControl wall;
         ObstacleControl obs;
 
         if ((wall = other.gameObject.GetComponent<WallControl>()) != null)
@@ -143,160 +157,6 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         else if ((obs = other.GetComponent<ObstacleControl>()) != null)
         {
             State = States.Idle;
-        }
-    }
-
-    private void HandleObstacle(ObstacleControl obs)
-    {
-        if (State == States.Idle && obs.State != ObstacleControl.States.Spawning)
-        {
-            var obstacleNormal = transform.position - obs.transform.position;
-
-            if (obs.State < ObstacleControl.States.OneThird)
-            {
-                //add score for hitting obstacle
-                _uiControl.AddScore(ObstaclePoints);
-                obs.State = obs.State + 1;
-
-                HandleBounce(obstacleNormal, false);
-            }
-            else
-            {
-                //add score and boost multiplier for breaking obstacle
-                _uiControl.BoostMultiplier();
-                _uiControl.AddScore(SweetReflectPoints);
-
-                HandleBounce(obstacleNormal, obs.CurrentPowerupType != PowerupControl.PowerupType.Slower);
-
-                if (obs.CurrentPowerupType == PowerupControl.PowerupType.Multiball)
-                {
-                    FindObjectOfType<SpawnControl>().SpawnBalls();
-                    PersonalPowerupType = PowerupControl.PowerupType.None;
-                }
-                else if(obs.CurrentPowerupType != PowerupControl.PowerupType.None)
-                {
-                    _powerupControl.SetAllPowerups(obs.CurrentPowerupType);
-                }
-
-                State = States.Idle;
-                Destroy(obs.gameObject);
-            }
-        }
-    }
-
-    private void HandleWall(WallControl wall)
-    {
-        switch (wall.State)
-        {
-            case WallControl.States.Idle:
-            case WallControl.States.Primed:
-            case WallControl.States.Charging:
-                if (State == States.Idle || State == States.Pause)
-                {
-                    if (Counter > PauseFrames && PersonalPowerupType == PowerupControl.PowerupType.Shield)
-                    {
-                        HandleWallBounce(wall.Normal, false);
-                        PersonalPowerupType = PowerupControl.PowerupType.None;
-                    }
-                    else
-                    {
-                        State = States.Pause;
-                    }
-                }
-                break;
-            case WallControl.States.Reflect:
-                // set multiplier back to 1, broke a chain of strong hits
-                _uiControl.ResetMultipler();
-                if (State == States.Pause)
-                {
-                    //sweet spot scoring
-                    _uiControl.AddScore(SweetReflectPoints);
-                    HandleWallBounce(wall.Normal, false);
-                    if (wall.NeedsEnabled) 
-                    {
-						wall.State = WallControl.States.Idle;
-                    }
-                    else
-                    {
-                    	wall.State = WallControl.States.Primed;
-                    }
-                }
-                else if (State == States.Idle)
-                {
-                    //normal scoring
-                    _uiControl.AddScore(ReflectPoints);
-                    HandleWallBounce(wall.Normal, false);
-                    wall.State = WallControl.States.ShortCooldown;
-                }
-                break;
-            case WallControl.States.ShortCooldown:
-            case WallControl.States.LongCooldown:
-                if (State != States.Bounce)
-                {
-                    if (PersonalPowerupType == PowerupControl.PowerupType.Shield)
-                    {
-                        HandleWallBounce(wall.Normal, false);
-                        PersonalPowerupType = PowerupControl.PowerupType.None;
-                    }
-                    else
-                    {
-                        Destroy(gameObject);
-                    }
-                }
-                break;
-            case WallControl.States.StrongReflect:
-                //add one to the current multiplier
-                _uiControl.BoostMultiplier();
-                if (State == States.Pause)
-                {
-                    //sweet spot scoring
-                    _uiControl.AddScore(SweetReflectPoints);
-                    HandleWallBounce(wall.Normal, true);
-					if (wall.NeedsEnabled) 
-                    {
-						wall.State = WallControl.States.Idle;
-                    }
-                    else
-                    {
-                    	wall.State = WallControl.States.Primed;
-                    }
-                }
-                else if (State == States.Idle)
-                {
-                    //normal scoring
-                    _uiControl.AddScore(ReflectPoints);
-                    HandleWallBounce(wall.Normal, true);
-                    wall.State = WallControl.States.ShortCooldown;
-                }
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
-    private void HandleWallBounce(Vector2 normal, bool strongBounce)
-    {
-        HandleBounce(normal, strongBounce);
-        _spawnControl.RegisterBounce();
-    }
-
-    private void HandleBounce(Vector2 normal, bool strongBounce)
-    {
-        // Source: http://stackoverflow.com/questions/573084/how-to-calculate-bounce-angle
-        var u = (Vector2.Dot(Velocity, normal) / Vector2.Dot(normal, normal)) * normal;
-        var w = Velocity - u;
-
-        BounceBonus = strongBounce ? StrongReflectBonus : 0;
-
-        //TODO: Add friction?
-        Velocity = w - u;
-
-        State = States.Bounce;
-    }
-
-    private void HandlePointMania(PointManiaControl point)
-    {
-        _uiControl.AddScore(point.PointManiaPoints);
-        Destroy(point.gameObject);
+        }*/
     }
 }
