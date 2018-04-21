@@ -26,7 +26,6 @@ Library/
 /*.info
 *.csproj
 *.dll
-*.meta
 /*/**/*.sln
  
 # ============ #
