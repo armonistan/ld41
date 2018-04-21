@@ -22,18 +22,18 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     //special moves
     public KeyCode Spin = KeyCode.Q;
     public KeyCode Sprint = KeyCode.W;
-    public KeyCode Juke = KeyCode.E;
     public KeyCode Tackle = KeyCode.R;
 
 	//public States State = States.Running;
 
 	//player speed
-    public float PlayerBaseSpeed = 4;
+    public float PlayerMaxSpeed = 8;
 	public float PlayerIdleSpeed = 0;
 
     //private variables
-	private float _currentPlayerSpeed = 0;
-	private Vector2 _currentPlayerVector = new Vector2();
+	private float _currentPlayerSpeedX = 0;
+    private float _currentPlayerSpeedY = 0;
+    private Vector2 _currentPlayerVector = new Vector2();
 	private float _radAngle = 0;
     private bool _notSpinning = true;
 
@@ -42,28 +42,18 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	private float _RIGHT_X = 1;
 	private float _FORWARD_Y = 1;
 	private float _BACKWARD_Y = -1;
-	private float _IDLE = 0;
-    private float _DEGREES_SPUN_PER_UPDATE = 90;
+	private float _SPEED_DECAY = .05f;
+    private float _SPEED_INCREASE = .2f;
 
+    float ButtonCooler = 0.5f ; // Half a second before reset
+    int ButtonCount = 0;
 
     public Vector2 Velocity
     {
         get
         {
-			return new Vector2 (Mathf.Cos (_radAngle), Mathf.Sin (_radAngle)) * _currentPlayerSpeed * Time.deltaTime;
+			return new Vector2 (Mathf.Cos (_radAngle) * Math.Abs(_currentPlayerSpeedX), Mathf.Sin (_radAngle) * Math.Abs(_currentPlayerSpeedY)) * Time.deltaTime;
 		}
-        set
-        {
-            _radAngle = Mathf.Atan2(value.y, value.x);
-        }
-    }
-
-    public Vector2 JukeVelocity
-    {
-        get
-        {
-            return new Vector2(Mathf.Cos(_radAngle), Mathf.Sin(_radAngle)) * 60 * Time.deltaTime;
-        }
         set
         {
             _radAngle = Mathf.Atan2(value.y, value.x);
@@ -101,7 +91,6 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         Velocity = _currentPlayerVector;
 		float currentPlayerVectorX = _currentPlayerVector.x;
 		float currentPlayerVectorY = _currentPlayerVector.y;
-		_currentPlayerSpeed = (currentPlayerVectorX != 0 || currentPlayerVectorY != 0) ? PlayerBaseSpeed : PlayerIdleSpeed;
 		gameObject.transform.Translate(Velocity);
         /*switch (State)
 	    {
@@ -122,29 +111,76 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         //left right input
         if (Input.GetKey(MoveLeft))
         {
-            _currentPlayerVector.x = _LEFT_X;
+            Debug.Log("left");
+            if (_currentPlayerSpeedX > 0) {
+                _currentPlayerSpeedX -= _SPEED_DECAY + _SPEED_INCREASE;
+            }
+            else if (Math.Abs(_currentPlayerSpeedX) < PlayerMaxSpeed)
+            {
+                _currentPlayerVector.x = _LEFT_X;
+                _currentPlayerSpeedX -= _SPEED_INCREASE;
+            }
         }
         else if (Input.GetKey(MoveRight))
         {
-            _currentPlayerVector.x = _RIGHT_X;
+            Debug.Log("right");
+            if (_currentPlayerSpeedX < 0)
+            {
+                _currentPlayerSpeedX += _SPEED_DECAY + _SPEED_INCREASE;
+            }
+            else if (Math.Abs(_currentPlayerSpeedX) < PlayerMaxSpeed)
+            {
+                _currentPlayerVector.x = _RIGHT_X;
+                _currentPlayerSpeedX += _SPEED_INCREASE;
+            }
         }
         else
         {
-            _currentPlayerVector.x = _IDLE;
+            if (_currentPlayerSpeedX < 0)
+            {
+                _currentPlayerSpeedX += _SPEED_DECAY;
+            }
+            else if (_currentPlayerSpeedX > 0)
+            {
+                _currentPlayerSpeedX -= _SPEED_DECAY;
+            }
         }
 
         //forward backward input
-        if (Input.GetKey(MoveForward))
+        if (Input.GetKey(MoveBackward))
         {
-            _currentPlayerVector.y = _FORWARD_Y;
+            if (_currentPlayerSpeedY > 0)
+            {
+                _currentPlayerSpeedY -= _SPEED_DECAY + _SPEED_INCREASE;
+            }
+            else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
+            {
+                _currentPlayerVector.y = _BACKWARD_Y;
+                _currentPlayerSpeedY -= _SPEED_INCREASE;
+            }
         }
-        else if (Input.GetKey(MoveBackward))
+        else if (Input.GetKey(MoveForward))
         {
-            _currentPlayerVector.y = _BACKWARD_Y;
+            if (_currentPlayerSpeedY < 0)
+            {
+                _currentPlayerSpeedY += _SPEED_DECAY + _SPEED_INCREASE;
+            }
+            else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
+            {
+                _currentPlayerVector.y = _FORWARD_Y;
+                _currentPlayerSpeedY += _SPEED_INCREASE;
+            }
         }
         else
         {
-            _currentPlayerVector.y = _IDLE;
+            if (_currentPlayerSpeedY < 0)
+            {
+                _currentPlayerSpeedY += _SPEED_DECAY;
+            }
+            else if (_currentPlayerSpeedY > 0)
+            {
+                _currentPlayerSpeedY -= _SPEED_DECAY;
+            }
         }
     }
 
@@ -156,7 +192,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         }
         else if (!_notSpinning)
         {
-            transform.Rotate(0, 0, _DEGREES_SPUN_PER_UPDATE);
+            Debug.Log("neat trick");
             if (Mathf.Approximately(transform.rotation.z, 0f))
             {
                 _notSpinning = true;
@@ -165,17 +201,43 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
         if (Input.GetKey(Sprint))
         {
-            PlayerBaseSpeed = 8;
+            //PlayerBaseSpeed = 8;
         }
         else
         {
-            PlayerBaseSpeed = 4;
+            //PlayerBaseSpeed = 4;
+        }
+        Juke();
+    }
+
+    void Juke()
+    {
+        KeyCode juke = (_currentPlayerVector.x > 0) ? KeyCode.LeftArrow : KeyCode.RightArrow;
+
+        if (Input.GetKeyDown(juke) || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (ButtonCooler > 0 && ButtonCount == 1/*Number of Taps you want Minus One*/)
+            {
+                Debug.Log("juked");
+                _currentPlayerVector.x *= -1;
+                _currentPlayerSpeedX *= -1;
+            }
+            else
+            {
+                ButtonCooler = 0.5f;
+                ButtonCount += 1;
+            }
         }
 
-        if (Input.GetKeyDown(Juke))
+        if (ButtonCooler > 0)
         {
-            JukeVelocity = _currentPlayerVector;
-            gameObject.transform.Translate(JukeVelocity);
+
+            ButtonCooler -= 1 * Time.deltaTime;
+
+        }
+        else
+        {
+            ButtonCount = 0;
         }
     }
 
