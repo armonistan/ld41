@@ -18,8 +18,6 @@ public class EnemyMap
 }
 
 public class Enemy : MonoBehaviour {
-    public EnemyType EnemyType;
-
 	// Use this for initialization
 	void Start () {
 		
