@@ -13,7 +13,7 @@ public class BallControl : StatefulMonoBehavior<BallControl.States>
         Bounce
     }
 
-	public float DegAngle;
+	/*public float DegAngle;
 	public float BallSteeringMagnitude = 1;
 	public KeyCode LeftBallSteering = KeyCode.A;
 	public KeyCode RightBallSteering = KeyCode.D;
@@ -344,5 +344,5 @@ public class BallControl : StatefulMonoBehavior<BallControl.States>
     {
         _uiControl.AddScore(point.PointManiaPoints);
         Destroy(point.gameObject);
-    }
+    }*/
 }

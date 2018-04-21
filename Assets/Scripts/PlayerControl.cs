@@ -19,7 +19,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	public KeyCode MoveForward = KeyCode.W;
 	public KeyCode MoveBackward = KeyCode.S;
 
-	public States State = States.Idle;
+	//public States State = States.Running;
 
 	//player speed
     public float PlayerBaseSpeed = 4;
@@ -27,7 +27,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
 	private float _currentPlayerSpeed = 0;
 	private Vector2 _currentPlayerVector = new Vector2();
-	private double _radAngle = 0;
+	private float _radAngle = 0;
 
 	//constants
 	private float _LEFT_X = -1;
@@ -103,9 +103,11 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
 
 		Velocity = _currentPlayerVector;
-		_currentPlayerSpeed = (_currentPlayerVector.x != 0 || _currentPlayerVector != 0) ? PlayerBaseSpeed : PlayerIdleSpeed;
-
-        switch (State)
+		float currentPlayerVectorX = _currentPlayerVector.x;
+		float currentPlayerVectorY = _currentPlayerVector.y;
+		_currentPlayerSpeed = (currentPlayerVectorX != 0 || currentPlayerVectorY != 0) ? PlayerBaseSpeed : PlayerIdleSpeed;
+		gameObject.transform.Translate(Velocity);
+		/*switch (State)
 	    {
 			case States.Idle:
 	            break;
@@ -117,7 +119,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
                 break;
 	        default:
 	            throw new ArgumentOutOfRangeException();
-	    }
+	    }*/
 	}
 
     void OnTriggerStay2D(Collider2D other)
