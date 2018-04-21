@@ -10,9 +10,14 @@ public enum EnemyType
     MenacingBoi
 }
 
-public class Enemy : MonoBehaviour {
+[Serializable]
+public class EnemyMap
+{
     public EnemyType EnemyType;
+    public Enemy EnemyPrefab;
+}
 
+public class Enemy : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		
