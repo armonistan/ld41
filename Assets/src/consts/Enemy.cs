@@ -10,6 +10,13 @@ public enum EnemyType
     MenacingBoi
 }
 
+[Serializable]
+public class EnemyMap
+{
+    public EnemyType EnemyType;
+    public Enemy EnemyPrefab;
+}
+
 public class Enemy : MonoBehaviour {
     public EnemyType EnemyType;
 
