@@ -138,10 +138,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 868621740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddacc016e8592174c9e7ac7ba266e8c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 17653dd72a474f948b34ba0d214aa6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyType: 0
+  Goal: {x: 0, y: 0}
+  MoveSpeed: 5
 --- !u!212 &868621742
 SpriteRenderer:
   m_ObjectHideFlags: 0
