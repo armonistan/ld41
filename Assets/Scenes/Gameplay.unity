@@ -529,6 +529,12 @@ Prefab:
       propertyPath: Plan
       value: 
       objectReference: {fileID: 687482710}
+    - target: {fileID: 114415729188141916, guid: 672e14e77ef15664080a18f90742e7ad,
+        type: 2}
+      propertyPath: Endzone
+      value: 
+      objectReference: {fileID: 212245837545611448, guid: b65c8b38a8072b34f8dcdf98881b8a6c,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 672e14e77ef15664080a18f90742e7ad, type: 2}
   m_IsPrefabParent: 0
