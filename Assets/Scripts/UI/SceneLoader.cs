@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour {
 
-	public void Load(SceneAsset scene)
+	public void Load(string scene)
     {
-        SceneManager.LoadScene(scene.name, LoadSceneMode.Single);
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
 }

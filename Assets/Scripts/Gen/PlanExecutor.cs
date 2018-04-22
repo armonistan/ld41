@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Assets.src.gen;
 using UnityEngine;
 using System.Linq;
-using Assets.Scripts.Constants;
 using Assets.Scripts.Gen;
+using UnityEngine.SceneManagement;
 
 public class PlanExecutor : MonoBehaviour {
     public List<Move> ThePlan;
@@ -22,7 +22,7 @@ public class PlanExecutor : MonoBehaviour {
     {
         get
         {
-            return ThePlan.Concat(TheExecutedPlan).Max((Move move) => move.Yard) + Environment.SCORE_DISTANCE;
+            return Mathf.CeilToInt(ThePlan.Concat(TheExecutedPlan).Max((Move move) => move.Yard) / (float)Field.YardsPerSection) * Field.YardsPerSection;
         }
     }
 
@@ -40,8 +40,7 @@ public class PlanExecutor : MonoBehaviour {
 	void Update () {
         if (Player.transform.position.y >= YardageGoal * Field.YardLength)
         {
-            Debug.Log("Win");
-            //TODO: Actually Win
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
 		foreach (Move move in ThePlan)
