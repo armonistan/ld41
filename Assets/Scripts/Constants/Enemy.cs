@@ -22,10 +22,13 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     public enum States {
         Pursuing,
         Charging,
-        Tackling
+        Tackling,
+        StiffArmed,
+        StiffArmedTossed
     }
 
-    public int MAX_SPEED = 1;
+    public float MAX_SPEED = 1f;
+    public float STIFF_ARM_TOSS_DURATION = 10f;
     private float _radAngle = 0;
     protected float _SPEED_DECAY = .05f;
     protected float _SPEED_INCREASE = .2f;
@@ -54,8 +57,18 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     // Update is called once per frame
     protected virtual void Update()
     {
-        UpdateMovementVector();
-        UpdateMovementSpeed();
+        if (State == States.StiffArmed)
+        {
+            HandlePlayerStiffArm();
+        } else if (State == States.StiffArmedTossed)
+        {
+            HandlePlayerStiffArmTossed();
+        }
+        else
+        {
+            UpdateMovementVector();
+            UpdateMovementSpeed();
+        }
         gameObject.transform.Translate(Velocity);
     }
 
@@ -153,62 +166,68 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.gameObject);
-        Debug.Log(other.gameObject.GetComponentInChildren<PlayerControl>().State);
+        
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Spinning)
-        {
-            Debug.Log("Can't Hurt Him...");
-        } else if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Tackling) {
-            Destroy(gameObject);
-        } else
-        {
-            HurtPlayer(other.gameObject.GetComponentInChildren<PlayerControl>());
-        }
-        /*if (Time.timeScale == GameControl.Paused)
+        PlayerControl player; 
+
+        if ((player = other.gameObject.GetComponentInChildren<PlayerControl>()) == null)
         {
             return;
         }
 
-        WallControl wall;
-        ObstacleControl obs;
-        PointManiaControl point;
+        State = (player.State == PlayerControl.States.StiffArming) ? States.StiffArmed : State;
 
-        if ((wall = other.gameObject.GetComponent<WallControl>()) != null)
+        if (player.State == PlayerControl.States.Spinning)
         {
-            HandleWall(wall);
+            HandlePlayerSpinning();
         }
-        else if ((obs = other.GetComponent<ObstacleControl>()) != null)
+        else if (player.State == PlayerControl.States.Tackling)
         {
-            HandleObstacle(obs);
+            HandlePlayerTackle();
         }
-        else if ((point = other.GetComponent<PointManiaControl>()) != null)
+        else
         {
-            HandlePointMania(point);
-        }*/
+            HurtPlayer(player);
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("exiting");
-        /*WallControl wall;
-        ObstacleControl obs;
+        PlayerControl player;
 
-        if ((wall = other.gameObject.GetComponent<WallControl>()) != null)
+        if ((player = other.gameObject.GetComponentInChildren<PlayerControl>()) == null)
         {
-            State = States.Idle;
+            return;
         }
-        else if ((obs = other.GetComponent<ObstacleControl>()) != null)
-        {
-            State = States.Idle;
-        }*/
+
+        State = (State == States.StiffArmed) ? States.StiffArmedTossed : State;
     }
 
     protected virtual void HurtPlayer(PlayerControl player)
     {
         Debug.Log("Deducting HP");
+    }
+
+    protected virtual void HandlePlayerStiffArm()
+    {
+        Debug.Log("Being Stiff Armed");
+    }
+
+    protected virtual void HandlePlayerSpinning()
+    {
+        Debug.Log("He is Spinning Two FAST");
+    }
+
+    protected virtual void HandlePlayerTackle()
+    {
+        Destroy(gameObject);
+    }
+
+    protected virtual void HandlePlayerStiffArmTossed()
+    {
+        Debug.Log("He tossed me?");
     }
 }
