@@ -74,12 +74,11 @@ public class GameData : MonoBehaviour {
 
             BinaryFormatter bf = new BinaryFormatter();
             SaveData data = (SaveData) bf.Deserialize(file);
+            file.Close();
 
             currentPlayer = data.currentPlayer;
             hallOfFame = data.hallOfFame;
             money = data.money;
-
-            file.Close();
             hasLoaded = true;
         }
     }
