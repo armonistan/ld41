@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TackleEnemy : Enemy {
-    public GameObject Player;
     public int MAX_SPEED = 1;
     private float _SPEED_DECAY = .05f;
     private float _SPEED_INCREASE = .2f;
@@ -37,11 +36,13 @@ public class TackleEnemy : Enemy {
         UpdateMovementSpeed();
         gameObject.transform.Translate(Velocity);
     }
+        var player = FindObjectOfType<PlayerControl>();
+
+        _enemyToPlayerDeltaVector.x = player.transform.position.x - this.transform.position.x;
+        _enemyToPlayerDeltaVector.y = player.transform.position.y - this.transform.position.y;
 
     void UpdateMovementVector()
     {
-        _enemyToPlayerDeltaVector.x = Player.transform.position.x - this.transform.position.x;
-        _enemyToPlayerDeltaVector.y = Player.transform.position.y - this.transform.position.y;
         Velocity = _enemyToPlayerDeltaVector;
     }
 

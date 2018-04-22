@@ -11,7 +11,9 @@ public class PlanExecutor : MonoBehaviour {
     public List<EnemyMap> EnemyPrefabs;
     public List<Vector3> SpawnPoints;
 
-    public int CurrentYard; //TODO: Get this from a player object
+    public int YardageGoal;
+
+    public PlayerControl Player;
 
 	// Use this for initialization
 	void Start () {
@@ -20,9 +22,15 @@ public class PlanExecutor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (Player.transform.position.y >= YardageGoal)
+        {
+            Debug.Log("Win");
+            //TODO: Actually Win
+        }
+
 		foreach (Move move in ThePlan)
         {
-            if (move.Yard <= CurrentYard)
+            if (move.Yard <= Player.transform.position.y)
             {
                 for (var i = 0; i < move.Enemies.Length; i++)
                 {
@@ -40,6 +48,6 @@ public class PlanExecutor : MonoBehaviour {
     private void createEnemy(EnemyType enemy, Vector3 position)
     {
         var foundEnemy = EnemyPrefabs.Find((EnemyMap map) => map.EnemyType == enemy);
-        if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab, position, Quaternion.identity); }
+        if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab, position + Player.transform.position, Quaternion.identity); }
     }
 }
