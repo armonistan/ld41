@@ -4,35 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerCard : MonoBehaviour {
-    public GameObject PlayerNameLabel;
-    public GameObject ReversePlayerNameLabel;
-    public GameObject PlayerNumberLabel;
-    public GameObject BulkSlider;
-    public GameObject SpeedSlider;
-    public GameObject StyleSlider;
-    public GameObject PriceLabel;
-    public GameObject AbilityNameLabel;
-    public GameObject AbilityDescriptionLabel;
-    public GameObject PlayerHeightLabel;
-    public GameObject PlayerWeightLabel;
-    public GameObject MilkLabel;
+    public Text PlayerNameLabel;
+    public Text ReversePlayerNameLabel;
+    public Text PlayerNumberLabel;
+    public Slider BulkSlider;
+    public Slider SpeedSlider;
+    public Slider StyleSlider;
+    public Text PriceLabel;
+    public Text AbilityNameLabel;
+    public Text AbilityDescriptionLabel;
+    public Text PlayerHeightLabel;
+    public Text PlayerWeightLabel;
+    public Text MilkLabel;
 
     public bool selected = false;
     private bool selectUpdated = false;
 
     public void renderCard(PlayerStats player) {
-        PlayerNameLabel.GetComponent<Text>().text = player.getPlayerName();
-        ReversePlayerNameLabel.GetComponent<Text>().text = player.getPlayerName();
-        PlayerNumberLabel.GetComponent<Text>().text = player.getPlayerNumber();
-        BulkSlider.GetComponent<Slider>().value = player.getBulk();
-        SpeedSlider.GetComponent<Slider>().value = player.getSpeed();
-        StyleSlider.GetComponent<Slider>().value = player.getStyle();
-        PriceLabel.GetComponent<Text>().text = player.getPrice().ToString("C");
-        AbilityNameLabel.GetComponent<Text>().text = player.getAbilityName();
-        AbilityDescriptionLabel.GetComponent<Text>().text = player.getAbilityDescription();
-        PlayerHeightLabel.GetComponent<Text>().text = player.getHeight();
-        PlayerWeightLabel.GetComponent<Text>().text = player.getWeight();
-        MilkLabel.GetComponent<Text>().text = player.getMilk();
+        PlayerNameLabel.text = player.getPlayerName();
+        ReversePlayerNameLabel.text = player.getPlayerName();
+        PlayerNumberLabel.text = player.getPlayerNumber();
+        BulkSlider.value = player.getBulk();
+        SpeedSlider.value = player.getSpeed();
+        StyleSlider.value = player.getStyle();
+        PriceLabel.text = player.getPrice().ToString("C0");
+        AbilityNameLabel.text = player.getAbilityName();
+        AbilityDescriptionLabel.text = player.getAbilityDescription();
+        PlayerHeightLabel.text = player.getHeight();
+        PlayerWeightLabel.text = player.getWeight();
+        MilkLabel.text = player.getMilk();
     }
 
     public void setSelected(bool selected)

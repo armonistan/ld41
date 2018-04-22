@@ -65,7 +65,7 @@ public class PlayerGenerator : MonoBehaviour {
 
     public void generate(GameObject passOn)
     {
-        PointAllocation points = generateStats((int)Random.Range(0, 15));
+        PointAllocation points = generateStats(5000f, (int)Random.Range(0, 15));
         int basePrice = 100000;
         PlayerStats stats = new PlayerStats(generateName(), generateNumber(), points.speed, points.bulk, points.style, (int) (basePrice * points.cost_multiplier), AbilitiesEnum.getRandom(), getHeight(), getWeight());
         PlayerCard maybeCard = passOn.GetComponent<PlayerCard>();
@@ -75,11 +75,26 @@ public class PlayerGenerator : MonoBehaviour {
         }
     }
 
-    static public PlayerStats generate()
+    static public PlayerStats generate(int price)
     {
-        PointAllocation points = generateStats((int)Random.Range(0, 15));
-        int basePrice = 100000;
-        PlayerStats stats = new PlayerStats(generateName(), generateNumber(), points.speed, points.bulk, points.style, (int)(basePrice * points.cost_multiplier), AbilitiesEnum.getRandom(), getHeight(), getWeight());
+        int basePrice;
+        PointAllocation points;
+        Abilities ability;
+
+        if (price < 100000)
+        {
+            basePrice = 0;
+            points = generateStats(1f, 0);
+            ability = Abilities.FreeAgent;
+        } else
+        {
+            basePrice = 100000;
+            ability = AbilitiesEnum.getRandom();
+            float maxMultiplier = (price * 1.0f) / (basePrice * 1.0f);
+            points = generateStats(maxMultiplier, (int)Random.Range(0, 15));
+        }
+
+        PlayerStats stats = new PlayerStats(generateName(), generateNumber(), points.speed, points.bulk, points.style, (int)(basePrice * points.cost_multiplier), ability, getHeight(), getWeight());
         return stats;
     }
 
@@ -93,9 +108,9 @@ public class PlayerGenerator : MonoBehaviour {
         return ((int)Random.Range(0, 420)).ToString();
     }
 	
-    private static PointAllocation generateStats(int points)
+    private static PointAllocation generateStats(float maxMultiplier, int points)
     {
-        return new PointAllocation(points);
+        return new PointAllocation(maxMultiplier, points);
     }
 
     private static string getHeight()
@@ -107,7 +122,7 @@ public class PlayerGenerator : MonoBehaviour {
     {
         return ((int)Random.Range(100, 450)).ToString() + " lbs";
     }
-
+     
 	private class PointAllocation
     {
         public int speed = 2;
@@ -115,12 +130,12 @@ public class PlayerGenerator : MonoBehaviour {
         public int style = 2;
         public float cost_multiplier = 1.0f;
 
-        public PointAllocation(int points)
+        public PointAllocation(float maxMultiplier, int points)
         {
             int max_points = 15;
 
             // allocates all points into the stats with equal probability
-            for(int i = 0; i < points && i < max_points; i++)
+            for(int i = 0; i < points && i < max_points && cost_multiplier < maxMultiplier; i++)
             {
                 float bucket = Random.value;
                 if (bucket < .33)
