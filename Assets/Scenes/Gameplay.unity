@@ -363,14 +363,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2123360433}
         m_MethodName: Load
-        m_Mode: 2
+        m_Mode: 5
         m_Arguments:
-          m_ObjectArgument: {fileID: 102900000, guid: 2931f15777a92634cb0e1d2367c33555,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEditor.SceneAsset, UnityEditor
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: HallOfFame
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -902,6 +901,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2123360434}
   - component: {fileID: 2123360433}
+  - component: {fileID: 2123360435}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -933,3 +933,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2123360435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2123360432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f663d9721393247bf57854eeee36a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathOverlay: {fileID: 1618834594}
