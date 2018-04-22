@@ -159,11 +159,6 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         }
     }
 
-    private void HandleStiffArmed()
-    {
-        Velocity = GameObject.Find("TestPlayer").GetComponent<PlayerControl>().Velocity;
-    }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject);
@@ -176,11 +171,11 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
         if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Spinning)
         {
-            Debug.Log("Can't Hurt Him...");
+            HandlePlayerSpinning();
         }
         else if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Tackling)
         {
-            Destroy(gameObject);
+            HandlePlayerTackle();
         }
         else
         {
@@ -228,5 +223,20 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     protected virtual void HurtPlayer(PlayerControl player)
     {
         Debug.Log("Deducting HP");
+    }
+
+    protected virtual void HandlePlayerStiffArm()
+    {
+        Debug.Log("Being Stiff Armed");
+    }
+
+    protected virtual void HandlePlayerSpinning()
+    {
+        Debug.Log("He is Spinning Two FAST");
+    }
+
+    protected virtual void HandlePlayerTackle()
+    {
+        Destroy(gameObject);
     }
 }
