@@ -9,13 +9,13 @@ public class MainMenu : MonoBehaviour
     {
         if (!GameData.getHasLoaded())
         {
-            GameData.Load();
+            //GameData.Load();
         }
     }
 
     public void Quit()
     {
-        GameData.Save();
+        //GameData.Save();
         Application.Quit();
     }
 }
