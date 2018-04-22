@@ -27,7 +27,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	//public States State = States.Running;
 
 	//player speed
-    public float PlayerMaxSpeed = 8;
+    public float PlayerMaxSpeed = 12;
 	public float PlayerIdleSpeed = 0;
 
     //private variables
@@ -42,8 +42,8 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	private float _RIGHT_X = 1;
 	private float _FORWARD_Y = 1;
 	private float _BACKWARD_Y = -1;
-	private float _SPEED_DECAY = .05f;
-    private float _SPEED_INCREASE = .2f;
+	private float _SPEED_DECAY_PERCENTAGE = .01f;
+    private float _SPEED_INCREASE = 1f;
 
     float ButtonCooler = 0.5f ; // Half a second before reset
     int ButtonCount = 0;
@@ -111,9 +111,8 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         //left right input
         if (Input.GetKey(MoveLeft))
         {
-            Debug.Log("left");
             if (_currentPlayerSpeedX > 0) {
-                _currentPlayerSpeedX -= _SPEED_DECAY + _SPEED_INCREASE;
+                _currentPlayerSpeedX -= (Math.Abs(_currentPlayerSpeedX*_SPEED_DECAY_PERCENTAGE) + _SPEED_INCREASE);
             }
             else if (Math.Abs(_currentPlayerSpeedX) < PlayerMaxSpeed)
             {
@@ -123,10 +122,9 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         }
         else if (Input.GetKey(MoveRight))
         {
-            Debug.Log("right");
             if (_currentPlayerSpeedX < 0)
             {
-                _currentPlayerSpeedX += _SPEED_DECAY + _SPEED_INCREASE;
+                _currentPlayerSpeedX += (Math.Abs(_currentPlayerSpeedX * _SPEED_DECAY_PERCENTAGE) + _SPEED_INCREASE);
             }
             else if (Math.Abs(_currentPlayerSpeedX) < PlayerMaxSpeed)
             {
@@ -138,11 +136,11 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedX < 0)
             {
-                _currentPlayerSpeedX += _SPEED_DECAY;
+                _currentPlayerSpeedX += Math.Abs(_currentPlayerSpeedX * _SPEED_DECAY_PERCENTAGE);
             }
             else if (_currentPlayerSpeedX > 0)
             {
-                _currentPlayerSpeedX -= _SPEED_DECAY;
+                _currentPlayerSpeedX -= Math.Abs(_currentPlayerSpeedX * _SPEED_DECAY_PERCENTAGE);
             }
         }
 
@@ -151,7 +149,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedY > 0)
             {
-                _currentPlayerSpeedY -= _SPEED_DECAY + _SPEED_INCREASE;
+                _currentPlayerSpeedY -= (Math.Abs(_currentPlayerSpeedY * _SPEED_DECAY_PERCENTAGE) + _SPEED_INCREASE);
             }
             else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
             {
@@ -163,7 +161,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedY < 0)
             {
-                _currentPlayerSpeedY += _SPEED_DECAY + _SPEED_INCREASE;
+                _currentPlayerSpeedY += (Math.Abs(_currentPlayerSpeedY * _SPEED_DECAY_PERCENTAGE) + _SPEED_INCREASE);
             }
             else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
             {
@@ -175,16 +173,30 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedY < 0)
             {
-                _currentPlayerSpeedY += _SPEED_DECAY;
+                _currentPlayerSpeedY += Math.Abs(_currentPlayerSpeedY * _SPEED_DECAY_PERCENTAGE);
             }
             else if (_currentPlayerSpeedY > 0)
             {
-                _currentPlayerSpeedY -= _SPEED_DECAY;
+                _currentPlayerSpeedY -= Math.Abs(_currentPlayerSpeedY * _SPEED_DECAY_PERCENTAGE);
             }
         }
     }
 
     void UpdatePlayerSpecialInput()
+    {
+        if (Input.GetKey(Sprint))
+        {
+            //PlayerBaseSpeed = 8;
+        }
+        else
+        {
+            //PlayerBaseSpeed = 4;
+        }
+        CheckSpin();
+        CheckJuke();
+    }
+
+    void CheckSpin()
     {
         if (Input.GetKeyDown(Spin) && _notSpinning)
         {
@@ -198,27 +210,16 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
                 _notSpinning = true;
             }
         }
-
-        if (Input.GetKey(Sprint))
-        {
-            //PlayerBaseSpeed = 8;
-        }
-        else
-        {
-            //PlayerBaseSpeed = 4;
-        }
-        Juke();
     }
 
-    void Juke()
+    void CheckJuke()
     {
         KeyCode juke = (_currentPlayerVector.x > 0) ? KeyCode.LeftArrow : KeyCode.RightArrow;
 
-        if (Input.GetKeyDown(juke) || Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(juke))
         {
             if (ButtonCooler > 0 && ButtonCount == 1/*Number of Taps you want Minus One*/)
             {
-                Debug.Log("juked");
                 _currentPlayerVector.x *= -1;
                 _currentPlayerSpeedX *= -1;
             }
