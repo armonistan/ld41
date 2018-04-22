@@ -11,7 +11,7 @@ public class PlanExecutor : MonoBehaviour {
     public List<EnemyMap> EnemyPrefabs;
     public List<Vector3> SpawnPoints;
 
-    public int CurrentYard; //TODO: Get this from a player object
+    public PlayerControl Player;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +22,7 @@ public class PlanExecutor : MonoBehaviour {
 	void Update () {
 		foreach (Move move in ThePlan)
         {
-            if (move.Yard <= CurrentYard)
+            if (move.Yard <= Player.transform.position.y)
             {
                 for (var i = 0; i < move.Enemies.Length; i++)
                 {
@@ -40,6 +40,6 @@ public class PlanExecutor : MonoBehaviour {
     private void createEnemy(EnemyType enemy, Vector3 position)
     {
         var foundEnemy = EnemyPrefabs.Find((EnemyMap map) => map.EnemyType == enemy);
-        if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab, position, Quaternion.identity); }
+        if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab, position + Player.transform.position, Quaternion.identity); }
     }
 }

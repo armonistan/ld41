@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TackleEnemy : Enemy {
-    public GameObject Player;
     public int BaseSpeed = 1;
 
     private float _radAngle = 0;
@@ -29,8 +28,10 @@ public class TackleEnemy : Enemy {
 	
 	// Update is called once per frame
 	void Update () {
-        _enemyToPlayerDeltaVector.x = Player.transform.position.x - this.transform.position.x;
-        _enemyToPlayerDeltaVector.y = Player.transform.position.y - this.transform.position.y;
+        var player = FindObjectOfType<PlayerControl>();
+
+        _enemyToPlayerDeltaVector.x = player.transform.position.x - this.transform.position.x;
+        _enemyToPlayerDeltaVector.y = player.transform.position.y - this.transform.position.y;
         Velocity = _enemyToPlayerDeltaVector;
         float currentEnemyVectorX = _enemyToPlayerDeltaVector.x;
         float currentEnemyVectorY = _enemyToPlayerDeltaVector.y;
