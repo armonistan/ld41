@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Field : MonoBehaviour {
     public SpriteRenderer FieldSection;
+    public SpriteRenderer Endzone;
     public int YardsPerSection;
 
     public PlanExecutor Plan;
@@ -40,6 +41,8 @@ public class Field : MonoBehaviour {
             {
                 Instantiate(FieldSection, new Vector3(0, FieldSection.bounds.size.y * s + FieldSection.bounds.size.y / 2, 1), Quaternion.identity, transform);
             }
+
+            Instantiate(Endzone, new Vector3(0, FieldSection.bounds.size.y * _numberOfSections + Endzone.bounds.size.y / 2, 1), Quaternion.identity, transform);
 
             _initialized = true;
         }
