@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayerAbilities;
 
+[System.Serializable]
 public class PlayerStats {
     private string playerName = "Tommy Wiseau";
     private string playerNumber = "69";

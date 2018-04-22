@@ -57,7 +57,7 @@ MonoBehaviour:
   TheExecutedPlan: []
   EnemyPrefabs:
   - EnemyType: 0
-    EnemyPrefab: {fileID: 114538051950233462, guid: 2704bfa0cf200d949ae3f1da3525ddc8,
+    EnemyPrefab: {fileID: 114145315941846250, guid: 837a4883c818feb45abd44682d653353,
       type: 2}
   SpawnPoints:
   - {x: -8, y: 4, z: 0}
@@ -65,4 +65,5 @@ MonoBehaviour:
   - {x: 0, y: 4, z: 0}
   - {x: -4, y: 4, z: 0}
   - {x: 4, y: 4, z: 0}
-  CurrentYard: 0
+  Player: {fileID: 0}
+  Field: {fileID: 0}

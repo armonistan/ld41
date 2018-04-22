@@ -9,22 +9,17 @@ public class HallOfFameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        for(int i=0; i<5; i++)
+        ArrayList hall = GameData.getHallOfFame();
+        for(int i=hall.Count; i > 0; i--)
         {
-            addPlayerCard(PlayerGenerator.generate(12500000), i);
+            addPlayerCard((PlayerStats)hall[i-1]);
         }
 	}
 
-    private void addPlayerCard(PlayerStats stats, int listOrder)
+    private void addPlayerCard(PlayerStats stats)
     {
         PlayerCard card = Instantiate(playerCardPrefab, contentArea.transform);
         RectTransform cardTransform = card.GetComponentInChildren<RectTransform>();
         card.renderCard(stats);
-        //cardTransform.offsetMin = new Vector2(0, (listOrder * -800));
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
