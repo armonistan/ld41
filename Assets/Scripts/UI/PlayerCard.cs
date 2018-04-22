@@ -17,7 +17,15 @@ public class PlayerCard : MonoBehaviour {
     public Text PlayerWeightLabel;
     public Text MilkLabel;
 
+    public Text CareerValue;
+    public Text EnemiesDefeated;
+    public Text Tackles;
+    public Text StiffArms;
+    public Text Yardage;
+    public Text Touchdowns;
+
     public bool selected = false;
+    public bool hallOfFame = false;
     private bool selectUpdated = false;
 
     public void renderCard(PlayerStats player) {
@@ -33,6 +41,16 @@ public class PlayerCard : MonoBehaviour {
         PlayerHeightLabel.text = player.getHeight();
         PlayerWeightLabel.text = player.getWeight();
         MilkLabel.text = player.getMilk();
+
+        if(this.hallOfFame)
+        {
+            CareerValue.text = player.getCareerValue().ToString("C0");
+            EnemiesDefeated.text = player.getEnemiesDefeated().ToString();
+            Tackles.text = player.getBrokenTackles().ToString();
+            StiffArms.text = player.getStiffArms().ToString();
+            Yardage.text = player.getYardsCovered().ToString();
+            Touchdowns.text = player.getTouchdowns().ToString();
+        }
     }
 
     public void setSelected(bool selected)

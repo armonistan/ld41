@@ -15,6 +15,12 @@ public class PlayerStats {
     private string height = "";
     private string weight = "";
 
+    private int enemiesDefeated = 0;
+    private float yardsCovered = 0f;
+    private int stiffArms = 0;
+    private int brokenTackles = 0;
+    private int touchdowns = 0;
+
     private string[] milk = { "2%", "Whole", "Non-Fat", "Skim", "Curdled", "Buttermilk", "1/2 and 1/2", "Swamp", "Vitamin D", "Soy", "Almond", "Almond-Vanilla", "Pasteurized", "Unceasing", "Chocolate", "Extra", "Wet", "Dehydrated" };
 
     public PlayerStats(string name, string number)
@@ -37,6 +43,23 @@ public class PlayerStats {
         this.height = height;
         this.weight = weight;
     }
+
+    public int getCareerValue()
+    {
+        return (int)(yardsCovered * 1.4) * touchdowns + (stiffArms * 1000) + (brokenTackles * 800) * 100;
+    }
+
+    public int getEnemiesDefeated() { return enemiesDefeated; }
+    public float getYardsCovered() { return yardsCovered; }
+    public int getStiffArms() { return stiffArms; }
+    public int getBrokenTackles() { return brokenTackles; }
+    public int getTouchdowns() { return touchdowns; }
+
+    public void recordEnemyDefeated() { enemiesDefeated++; }
+    public void recordYardsCovered(float additionalYards) { yardsCovered += additionalYards; }
+    public void recordStiffArm() { stiffArms++; }
+    public void recordBrokenTackle() { brokenTackles++; }
+    public void recordTouchdown() { touchdowns++; }
 
     public string getPlayerName() { return playerName; }
     public string getPlayerNumber() { return playerNumber; }
