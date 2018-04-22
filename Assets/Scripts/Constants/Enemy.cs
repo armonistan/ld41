@@ -26,10 +26,9 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     }
 
     public int MAX_SPEED = 1;
+    private float _radAngle = 0;
     protected float _SPEED_DECAY = .05f;
     protected float _SPEED_INCREASE = .2f;
-
-    private float _radAngle = 0;
     protected float _currentSpeedX = 0;
     protected float _currentSpeedY = 0;
     protected Vector2 _enemyToPlayerDeltaVector = new Vector2();
@@ -47,13 +46,13 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     }
 
     // Use this for initialization
-    protected void Start()
+    protected virtual void Start()
     {
 
     }
 
     // Update is called once per frame
-    protected void Update()
+    protected virtual void Update()
     {
         UpdateMovementVector();
         UpdateMovementSpeed();
@@ -61,6 +60,11 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     }
 
     protected virtual void UpdateMovementVector()
+    {
+        SetMovementVectorToPursuePlayer();
+    }
+
+    protected void SetMovementVectorToPursuePlayer()
     {
         var player = FindObjectOfType<PlayerControl>();
 
@@ -71,10 +75,10 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void UpdateMovementSpeed()
     {
-        FollowPlayer();
+        SetMovementSpeedToFollowPlayer();
     }
 
-    protected void FollowPlayer()
+    protected void SetMovementSpeedToFollowPlayer()
     {
         //left right
         if (_enemyToPlayerDeltaVector.x > 0)
@@ -150,11 +154,20 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject);
+        Debug.Log(other.gameObject.GetComponentInChildren<PlayerControl>().State);
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        Debug.Log("colliding");
+        if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Spinning)
+        {
+            Debug.Log("Can't Hurt Him...");
+        } else if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Tackling) {
+            Destroy(gameObject);
+        } else
+        {
+            HurtPlayer(other.gameObject.GetComponentInChildren<PlayerControl>());
+        }
         /*if (Time.timeScale == GameControl.Paused)
         {
             return;
@@ -192,5 +205,10 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         {
             State = States.Idle;
         }*/
+    }
+
+    protected virtual void HurtPlayer(PlayerControl player)
+    {
+        Debug.Log("Deducting HP");
     }
 }
