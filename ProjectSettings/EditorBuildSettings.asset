@@ -4,4 +4,16 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/HallOfFame.unity
+    guid: 2931f15777a92634cb0e1d2367c33555
+  - enabled: 1
+    path: Assets/Scenes/Gameplay.unity
+    guid: 97f28864e84d82e4c8d92c8a54d2e4f0
+  - enabled: 1
+    path: Assets/Scenes/CharacterSelection.unity
+    guid: 6b6759fc6c9e69545b7e419548fcad43
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: a26c4ac1852edde47b2797ac7eb0cac4
