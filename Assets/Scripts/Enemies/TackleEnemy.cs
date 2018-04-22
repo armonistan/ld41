@@ -58,8 +58,6 @@ public class TackleEnemy : Enemy
         {
              _currentSpeedY += _TACKLE_SPEED;
         }
-
-        Debug.Log(_currentSpeedY);
     }
 
     protected override void UpdateMovementVector()
