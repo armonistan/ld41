@@ -29,8 +29,17 @@ public class TackleEnemy : Enemy
             _chargeTimer += Time.deltaTime;
         }
         else if(State == States.Charging && _chargeTimer > CHARGE_DURATION){
-            _SPEED_INCREASE = 2f;
+            _SPEED_INCREASE = 20f;
             FollowPlayer();
+            State = States.Tackling;
+        }
+    }
+
+    protected override void UpdateMovementVector()
+    {
+        if(State != States.Tackling)
+        {
+            base.UpdateMovementVector();
         }
     }
 }

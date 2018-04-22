@@ -61,7 +61,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         gameObject.transform.Translate(Velocity);
     }
 
-    protected void UpdateMovementVector()
+    protected virtual void UpdateMovementVector()
     {
         var player = FindObjectOfType<PlayerControl>();
 
