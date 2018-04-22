@@ -122,9 +122,9 @@ GameObject:
   m_Component:
   - component: {fileID: 115451659}
   - component: {fileID: 115451658}
-  - component: {fileID: 115451657}
   - component: {fileID: 115451660}
   - component: {fileID: 115451661}
+  - component: {fileID: 115451657}
   m_Layer: 0
   m_Name: Bubbles
   m_TagString: Untagged
@@ -140,12 +140,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 115451656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdaf6c96c09255a47bfcf1b20f6592b3, type: 3}
+  m_Script: {fileID: 11500000, guid: ddacc016e8592174c9e7ac7ba266e8c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_SPEED: 20
-  StartTackleDistance: 3
-  CHARGE_DURATION: 2
+  MAX_SPEED: 1
 --- !u!212 &115451658
 SpriteRenderer:
   m_ObjectHideFlags: 0
