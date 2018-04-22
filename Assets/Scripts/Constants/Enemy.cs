@@ -7,8 +7,7 @@ using Assets.Scripts;
 [Serializable]
 public enum EnemyType
 {
-    CraftyBoi,
-    MenacingBoi
+    CraftyBoi
 }
 
 [Serializable]
