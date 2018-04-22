@@ -36,13 +36,13 @@ public class TackleEnemy : Enemy {
         UpdateMovementSpeed();
         gameObject.transform.Translate(Velocity);
     }
+
+    void UpdateMovementVector()
+    {
         var player = FindObjectOfType<PlayerControl>();
 
         _enemyToPlayerDeltaVector.x = player.transform.position.x - this.transform.position.x;
         _enemyToPlayerDeltaVector.y = player.transform.position.y - this.transform.position.y;
-
-    void UpdateMovementVector()
-    {
         Velocity = _enemyToPlayerDeltaVector;
     }
 
