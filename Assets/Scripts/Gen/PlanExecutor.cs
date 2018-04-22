@@ -4,6 +4,7 @@ using Assets.src.gen;
 using UnityEngine;
 using System.Linq;
 using Assets.Scripts.Constants;
+using Assets.Scripts.Gen;
 
 public class PlanExecutor : MonoBehaviour {
     public List<Move> ThePlan;
@@ -15,6 +16,8 @@ public class PlanExecutor : MonoBehaviour {
     public PlayerControl Player;
     public Field Field;
 
+    private Camera _camera;
+
     public int YardageGoal
     {
         get
@@ -25,8 +28,13 @@ public class PlanExecutor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        if (ThePlan.Count == 0)
+        {
+            ThePlan = PlanGenerator.CreatePlan();
+        }
+
+        _camera = FindObjectOfType<Camera>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -56,6 +64,6 @@ public class PlanExecutor : MonoBehaviour {
     private void createEnemy(EnemyType enemy, Vector3 position)
     {
         var foundEnemy = EnemyPrefabs.Find((EnemyMap map) => map.EnemyType == enemy);
-        if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab, position + Player.transform.position, Quaternion.identity); }
+        if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab, position + new Vector3(_camera.transform.position.x, _camera.transform.position.y), Quaternion.identity); }
     }
 }

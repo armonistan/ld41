@@ -8,6 +8,8 @@ public class Field : MonoBehaviour {
 
     public PlanExecutor Plan;
 
+    private bool _initialized;
+
     public float YardLength
     {
         get
@@ -26,12 +28,20 @@ public class Field : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		for (var s = 0; s < _numberOfSections; s++)
-        {
-            Instantiate(FieldSection, new Vector3(0, FieldSection.bounds.size.y * s + FieldSection.bounds.size.y / 2, 1), Quaternion.identity);
-        }
+		
 	}
 
     // Update is called once per frame
-    void Update() { }
+    void Update()
+    {
+        if (_numberOfSections > 0 && !_initialized)
+        {
+            for (var s = 0; s < _numberOfSections; s++)
+            {
+                Instantiate(FieldSection, new Vector3(0, FieldSection.bounds.size.y * s + FieldSection.bounds.size.y / 2, 1), Quaternion.identity, transform);
+            }
+
+            _initialized = true;
+        }
+    }
 }

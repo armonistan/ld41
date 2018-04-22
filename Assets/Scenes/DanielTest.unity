@@ -229,11 +229,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4592467204787282, guid: 672e14e77ef15664080a18f90742e7ad, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 12.14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4592467204787282, guid: 672e14e77ef15664080a18f90742e7ad, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.46
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4592467204787282, guid: 672e14e77ef15664080a18f90742e7ad, type: 2}
       propertyPath: m_LocalPosition.z
@@ -270,6 +270,14 @@ Prefab:
       value: 
       objectReference: {fileID: 212012059557108888, guid: 678480c3a3f52c34782347655c6bcb51,
         type: 2}
+    - target: {fileID: 4592467204787282, guid: 672e14e77ef15664080a18f90742e7ad, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4592467204787282, guid: 672e14e77ef15664080a18f90742e7ad, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 672e14e77ef15664080a18f90742e7ad, type: 2}
   m_IsPrefabParent: 0
@@ -283,12 +291,17 @@ Prefab:
     - target: {fileID: 114211883918882930, guid: 81e36bc4a711740479b8ab2c639e58f2,
         type: 2}
       propertyPath: ThePlan.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114211883918882930, guid: 81e36bc4a711740479b8ab2c639e58f2,
         type: 2}
       propertyPath: ThePlan.Array.data[1].Enemies.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114211883918882930, guid: 81e36bc4a711740479b8ab2c639e58f2,
+        type: 2}
+      propertyPath: ThePlan.Array.data[0].Enemies.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4571379855745698, guid: 81e36bc4a711740479b8ab2c639e58f2, type: 2}
       propertyPath: m_LocalPosition.x
