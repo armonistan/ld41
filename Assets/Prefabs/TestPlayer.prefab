@@ -66,7 +66,7 @@ Transform:
   m_GameObject: {fileID: 1052482397620120}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 4069065352445962}
   m_Father: {fileID: 0}
@@ -132,11 +132,17 @@ MonoBehaviour:
   MoveRight: 275
   MoveForward: 273
   MoveBackward: 274
-  Spin: 113
-  Sprint: 119
-  Tackle: 114
+  SpinKey: 32
+  TackleKey: 114
+  StiffArmKey: 101
   PlayerMaxSpeed: 6
-  PlayerIdleSpeed: 0
+  SPEED_DECAY: 0.05
+  SPEED_INCREASE: 0.2
+  SPIN_DURATION: 1
+  TACKLE_DURATION: 1
+  STIFF_ARM_DURATION: 1
+  STYLE: 5
+  BULK: 5
 --- !u!212 &212982708451503738
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -171,7 +177,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8407b696fdd683b429d56f14c65b0e38, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f1da9087aec063249b028290a090a835, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
