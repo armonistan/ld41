@@ -77,19 +77,20 @@ public class PlayerGenerator : MonoBehaviour {
 
     static public PlayerStats generate(int price)
     {
-        int basePrice = 100000;
+        int basePrice;
         PointAllocation points;
         Abilities ability;
 
         if (price < 100000)
         {
+            basePrice = 0;
             points = generateStats(1f, 0);
             ability = Abilities.FreeAgent;
         } else
         {
+            basePrice = 100000;
             ability = AbilitiesEnum.getRandom();
             float maxMultiplier = (price * 1.0f) / (basePrice * 1.0f);
-            Debug.Log("Creating player with budget " + price + " and base price " + basePrice + " and multiplier " + maxMultiplier);
             points = generateStats(maxMultiplier, (int)Random.Range(0, 15));
         }
 
@@ -132,7 +133,6 @@ public class PlayerGenerator : MonoBehaviour {
         public PointAllocation(float maxMultiplier, int points)
         {
             int max_points = 15;
-            Debug.Log(maxMultiplier);
 
             // allocates all points into the stats with equal probability
             for(int i = 0; i < points && i < max_points && cost_multiplier < maxMultiplier; i++)
