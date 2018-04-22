@@ -945,3 +945,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathOverlay: {fileID: 1618834594}
+  GamePlayer: {fileID: 1422688176}
