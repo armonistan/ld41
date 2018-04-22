@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerSelection : MonoBehaviour {
 
     public PlayerCard[] playerCards;
     public Scrollbar panelScroll;
-    public int money;
+    private int money;
     public Text budgetLabel;
     public Text costLabel;
     private ArrayList generatedPlayers;
+    private int selected = -1;
 
 	// Use this for initialization
 	void Start () {
+        money = GameData.getMoney();
         generatedPlayers = new ArrayList();
         PlayerStats gen = PlayerGenerator.generate(0);
         generatedPlayers.Add(gen);
@@ -27,13 +30,9 @@ public class PlayerSelection : MonoBehaviour {
         budgetLabel.text = money.ToString("C0");
     }
 
-    public void setMoney(int money)
-    {
-        this.money = money;
-    }
-
     public void CardSelected(int selection)
     {
+        selected = selection;
         // set the green highlight only on the selected card
         for (int i = 0; i < playerCards.Length; i++)
         {
@@ -60,9 +59,20 @@ public class PlayerSelection : MonoBehaviour {
             panelScroll.value = 0;
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-        
-	}
+
+    public void StartGame()
+    {
+        if (selected != -1)
+        {
+            PlayerStats player = (PlayerStats)generatedPlayers[selected];
+            int price = player.getPrice();
+            if (price <= money)
+            {
+                GameData.setCurrentPlayer(player);
+                GameData.setMoney(money - price);
+                money -= price;
+                SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
+            }
+        }
+    }
 }
