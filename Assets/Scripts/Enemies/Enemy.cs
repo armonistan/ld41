@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TackleEnemy : Enemy {
+public class Billy : Enemy
+{
     public int MAX_SPEED = 1;
     private float _SPEED_DECAY = .05f;
     private float _SPEED_INCREASE = .2f;
@@ -26,18 +25,20 @@ public class TackleEnemy : Enemy {
     }
 
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    protected void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    protected void Update()
+    {
         UpdateMovementVector();
         UpdateMovementSpeed();
         gameObject.transform.Translate(Velocity);
     }
 
-    void UpdateMovementVector()
+    protected void UpdateMovementVector()
     {
         var player = FindObjectOfType<PlayerControl>();
 
@@ -46,7 +47,12 @@ public class TackleEnemy : Enemy {
         Velocity = _enemyToPlayerDeltaVector;
     }
 
-    void UpdateMovementSpeed()
+    protected void UpdateMovementSpeed()
+    {
+        FollowPlayer();
+    }
+
+    protected void FollowPlayer()
     {
         //left right
         if (_enemyToPlayerDeltaVector.x > 0)
@@ -117,5 +123,52 @@ public class TackleEnemy : Enemy {
                 _currentSpeedY -= _SPEED_DECAY;
             }
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log(other.gameObject);
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        Debug.Log("colliding");
+        /*if (Time.timeScale == GameControl.Paused)
+        {
+            return;
+        }
+
+        WallControl wall;
+        ObstacleControl obs;
+        PointManiaControl point;
+
+        if ((wall = other.gameObject.GetComponent<WallControl>()) != null)
+        {
+            HandleWall(wall);
+        }
+        else if ((obs = other.GetComponent<ObstacleControl>()) != null)
+        {
+            HandleObstacle(obs);
+        }
+        else if ((point = other.GetComponent<PointManiaControl>()) != null)
+        {
+            HandlePointMania(point);
+        }*/
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        Debug.Log("exiting");
+        /*WallControl wall;
+        ObstacleControl obs;
+
+        if ((wall = other.gameObject.GetComponent<WallControl>()) != null)
+        {
+            State = States.Idle;
+        }
+        else if ((obs = other.GetComponent<ObstacleControl>()) != null)
+        {
+            State = States.Idle;
+        }*/
     }
 }

@@ -8,9 +8,10 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 {
     public enum States
     {
-		Idle,
-        Running,
-        Spinning
+		Default,
+        Spinning,
+        StiffArming,
+        Tackling
     }
 		
 	//directional controls
@@ -20,33 +21,39 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	public KeyCode MoveBackward = KeyCode.DownArrow;
 
     //special moves
-    public KeyCode Spin = KeyCode.Q;
-    public KeyCode Sprint = KeyCode.W;
-    public KeyCode Tackle = KeyCode.R;
-
-	//public States State = States.Running;
+    public KeyCode SpinKey = KeyCode.Space;
+    public KeyCode TackleKey = KeyCode.R;
+    public KeyCode StiffArmKey = KeyCode.E;
 
 	//player speed
     public float PlayerMaxSpeed = 8;
-	public float PlayerIdleSpeed = 0;
 
     //private variables
 	private float _currentPlayerSpeedX = 0;
     private float _currentPlayerSpeedY = 0;
     private Vector2 _currentPlayerVector = new Vector2();
-	private float _radAngle = 0;
-    private bool _notSpinning = true;
+    private float _radAngle = 0;
+    private float spinTimer = 0f;
+    private float tackleTimer = 0f;
+    private float stiffArmTimer = 0f;
 
-	//constants
-	private float _LEFT_X = -1;
+    //constants
+    private float _LEFT_X = -1;
 	private float _RIGHT_X = 1;
 	private float _FORWARD_Y = 1;
 	private float _BACKWARD_Y = -1;
-	private float _SPEED_DECAY = .05f;
-    private float _SPEED_INCREASE = .2f;
 
-    float ButtonCooler = 0.5f ; // Half a second before reset
-    int ButtonCount = 0;
+    public float SPEED_DECAY = .05f;
+    public float SPEED_INCREASE = .2f;
+    public float SPIN_DURATION = 1f;
+    public float TACKLE_DURATION = 1f;
+    public float STIFF_ARM_DURATION = 1f;
+
+    public int STYLE = 5;
+    public int BULK = 5;
+
+    float JukeButtonCooldown = 0.5f ; // Half a second before reset
+    int JukeButtonCount = 0;
 
     public Vector2 Velocity
     {
@@ -62,7 +69,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     // Use this for initialization
     void Start () {
-		
+        State = States.Default;
 		//holding onto for reference later
 		/*
         if (FindObjectOfType<GameControl>().GetGameState() == GameControl.States.EasyMode)
@@ -85,62 +92,51 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
         UpdatePlayerMovementInput();
         UpdatePlayerSpecialInput();
-
-
-
-        Velocity = _currentPlayerVector;
-		float currentPlayerVectorX = _currentPlayerVector.x;
-		float currentPlayerVectorY = _currentPlayerVector.y;
-		gameObject.transform.Translate(Velocity);
-        /*switch (State)
-	    {
-			case States.Idle:
-	            break;
-			case States.Running:
-				gameObject.transform.Translate(Velocity);
-	            break;
-			case States.Spinning:
-				gameObject.transform.Translate(Velocity);
-                break;
-	        default:
-	            throw new ArgumentOutOfRangeException();
-	    }*/
+        UpdatePlayerPosition();
 	}
+
+    private void UpdatePlayerPosition()
+    {
+        Velocity = _currentPlayerVector;
+        float currentPlayerVectorX = _currentPlayerVector.x;
+        float currentPlayerVectorY = _currentPlayerVector.y;
+        gameObject.transform.Translate(Velocity);
+    }
 
     void UpdatePlayerMovementInput() {
         //left right input
         if (Input.GetKey(MoveLeft))
         {
             if (_currentPlayerSpeedX > 0) {
-                _currentPlayerSpeedX -= _SPEED_DECAY + _SPEED_INCREASE;
+                _currentPlayerSpeedX -= SPEED_DECAY + SPEED_INCREASE;
             }
             else if (Math.Abs(_currentPlayerSpeedX) < PlayerMaxSpeed)
             {
                 _currentPlayerVector.x = _LEFT_X;
-                _currentPlayerSpeedX -= _SPEED_INCREASE;
+                _currentPlayerSpeedX -= SPEED_INCREASE;
             }
         }
         else if (Input.GetKey(MoveRight))
         {
             if (_currentPlayerSpeedX < 0)
             {
-                _currentPlayerSpeedX += _SPEED_DECAY + _SPEED_INCREASE;
+                _currentPlayerSpeedX += SPEED_DECAY + SPEED_INCREASE;
             }
             else if (Math.Abs(_currentPlayerSpeedX) < PlayerMaxSpeed)
             {
                 _currentPlayerVector.x = _RIGHT_X;
-                _currentPlayerSpeedX += _SPEED_INCREASE;
+                _currentPlayerSpeedX += SPEED_INCREASE;
             }
         }
         else
         {
             if (_currentPlayerSpeedX < 0)
             {
-                _currentPlayerSpeedX += _SPEED_DECAY;
+                _currentPlayerSpeedX += SPEED_DECAY;
             }
             else if (_currentPlayerSpeedX > 0)
             {
-                _currentPlayerSpeedX -= _SPEED_DECAY;
+                _currentPlayerSpeedX -= SPEED_DECAY;
             }
         }
 
@@ -149,65 +145,109 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedY > 0)
             {
-                _currentPlayerSpeedY -= _SPEED_DECAY + _SPEED_INCREASE;
+                _currentPlayerSpeedY -= SPEED_DECAY + SPEED_INCREASE;
             }
             else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
             {
                 _currentPlayerVector.y = _BACKWARD_Y;
-                _currentPlayerSpeedY -= _SPEED_INCREASE;
+                _currentPlayerSpeedY -= SPEED_INCREASE;
             }
         }
         else if (Input.GetKey(MoveForward))
         {
             if (_currentPlayerSpeedY < 0)
             {
-                _currentPlayerSpeedY += _SPEED_DECAY + _SPEED_INCREASE;
+                _currentPlayerSpeedY += SPEED_DECAY + SPEED_INCREASE;
             }
             else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
             {
                 _currentPlayerVector.y = _FORWARD_Y;
-                _currentPlayerSpeedY += _SPEED_INCREASE;
+                _currentPlayerSpeedY += SPEED_INCREASE;
             }
         }
         else
         {
             if (_currentPlayerSpeedY < 0)
             {
-                _currentPlayerSpeedY += _SPEED_DECAY;
+                _currentPlayerSpeedY += SPEED_DECAY;
             }
             else if (_currentPlayerSpeedY > 0)
             {
-                _currentPlayerSpeedY -= _SPEED_DECAY;
+                _currentPlayerSpeedY -= SPEED_DECAY;
             }
         }
     }
 
     void UpdatePlayerSpecialInput()
     {
-        if (Input.GetKey(Sprint))
-        {
-            //PlayerBaseSpeed = 8;
-        }
-        else
-        {
-            //PlayerBaseSpeed = 4;
-        }
-        CheckSpin();
         CheckJuke();
+        CheckSpin();
+        CheckTackle();
+        CheckStiffArm();
+        Debug.Log(State);
     }
 
     void CheckSpin()
     {
-        if (Input.GetKeyDown(Spin) && _notSpinning)
+        if (Input.GetKeyDown(SpinKey) && State == States.Default)
         {
-            _notSpinning = false;
+            State = States.Spinning;
         }
-        else if (!_notSpinning)
+        else if (State == States.Spinning)
         {
-            Debug.Log("neat trick");
-            if (Mathf.Approximately(transform.rotation.z, 0f))
+            if (spinTimer <= SPIN_DURATION)
             {
-                _notSpinning = true;
+                spinTimer += Time.deltaTime;
+            } else
+            {
+                spinTimer = 0f;
+                State = States.Default;
+            }
+        }
+    }
+
+    void CheckTackle()
+    {
+        if (Input.GetKeyDown(TackleKey) && State == States.Default)
+        {
+            State = States.Tackling;
+        }
+        else if (State == States.Tackling)
+        {
+            if (tackleTimer <= TACKLE_DURATION)
+            {
+                tackleTimer += Time.deltaTime;
+            }
+            else
+            {
+                tackleTimer = 0f;
+                State = States.Default;
+            }
+        }
+    }
+
+    void CheckStiffArm()
+    {
+        if (Input.GetKeyDown(StiffArmKey) && State == States.Default)
+        {
+            State = States.StiffArming;
+        }
+        else if (State == States.StiffArming)
+        {
+            if (Input.GetKeyDown(StiffArmKey))
+            {
+                Debug.Log("Toss");
+                stiffArmTimer = 0f;
+                State = States.Default;
+            }
+            else if (stiffArmTimer <= TACKLE_DURATION)
+            {
+                stiffArmTimer += Time.deltaTime;
+            }
+            else
+            {
+                stiffArmTimer = 0f;
+                State = States.Default;
             }
         }
     }
@@ -218,27 +258,27 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
         if (Input.GetKeyDown(juke))
         {
-            if (ButtonCooler > 0 && ButtonCount == 1/*Number of Taps you want Minus One*/)
+            if (JukeButtonCooldown > 0 && JukeButtonCount == 1/*Number of Taps you want Minus One*/)
             {
                 _currentPlayerVector.x *= -1;
                 _currentPlayerSpeedX *= -1;
             }
             else
             {
-                ButtonCooler = 0.5f;
-                ButtonCount += 1;
+                JukeButtonCooldown = 0.5f;
+                JukeButtonCount += 1;
             }
         }
 
-        if (ButtonCooler > 0)
+        if (JukeButtonCooldown > 0)
         {
 
-            ButtonCooler -= 1 * Time.deltaTime;
+            JukeButtonCooldown -= 1 * Time.deltaTime;
 
         }
         else
         {
-            ButtonCount = 0;
+            JukeButtonCount = 0;
         }
     }
 
