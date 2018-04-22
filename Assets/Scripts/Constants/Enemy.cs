@@ -22,7 +22,8 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     public enum States {
         Pursuing,
         Charging,
-        Tackling
+        Tackling,
+        StiffArmed
     }
 
     public int MAX_SPEED = 1;
@@ -54,8 +55,15 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     // Update is called once per frame
     protected virtual void Update()
     {
-        UpdateMovementVector();
-        UpdateMovementSpeed();
+        if (State == States.StiffArmed)
+        {
+            HandleStiffArmed();
+        }
+        else
+        {
+            UpdateMovementVector();
+            UpdateMovementSpeed();
+        }
         gameObject.transform.Translate(Velocity);
     }
 
@@ -151,6 +159,11 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         }
     }
 
+    private void HandleStiffArmed()
+    {
+        Velocity = GameObject.Find("TestPlayer").GetComponent<PlayerControl>().Velocity;
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject);
@@ -159,12 +172,17 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     void OnTriggerStay2D(Collider2D other)
     {
+        State = (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.StiffArming) ? States.StiffArmed : States.Pursuing;
+
         if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Spinning)
         {
             Debug.Log("Can't Hurt Him...");
-        } else if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Tackling) {
+        }
+        else if (other.gameObject.GetComponentInChildren<PlayerControl>().State == PlayerControl.States.Tackling)
+        {
             Destroy(gameObject);
-        } else
+        }
+        else
         {
             HurtPlayer(other.gameObject.GetComponentInChildren<PlayerControl>());
         }
