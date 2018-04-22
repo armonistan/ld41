@@ -27,7 +27,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	//public States State = States.Running;
 
 	//player speed
-    public float PlayerMaxSpeed = 12;
+    public float PlayerMaxSpeed = 8;
 	public float PlayerIdleSpeed = 0;
 
     //private variables
@@ -42,8 +42,8 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	private float _RIGHT_X = 1;
 	private float _FORWARD_Y = 1;
 	private float _BACKWARD_Y = -1;
-	private float _SPEED_DECAY_PERCENTAGE = .01f;
-    private float _SPEED_INCREASE = 1f;
+	private float _SPEED_DECAY = .05f;
+    private float _SPEED_INCREASE = .2f;
 
     float ButtonCooler = 0.5f ; // Half a second before reset
     int ButtonCount = 0;
@@ -112,7 +112,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         if (Input.GetKey(MoveLeft))
         {
             if (_currentPlayerSpeedX > 0) {
-                _currentPlayerSpeedX -= (Math.Abs(_currentPlayerSpeedX*_SPEED_DECAY_PERCENTAGE) + _SPEED_INCREASE);
+                _currentPlayerSpeedX -= _SPEED_DECAY + _SPEED_INCREASE;
             }
             else if (Math.Abs(_currentPlayerSpeedX) < PlayerMaxSpeed)
             {
@@ -124,7 +124,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedX < 0)
             {
-                _currentPlayerSpeedX += (Math.Abs(_currentPlayerSpeedX * _SPEED_DECAY_PERCENTAGE) + _SPEED_INCREASE);
+                _currentPlayerSpeedX += _SPEED_DECAY + _SPEED_INCREASE;
             }
             else if (Math.Abs(_currentPlayerSpeedX) < PlayerMaxSpeed)
             {
@@ -136,11 +136,11 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedX < 0)
             {
-                _currentPlayerSpeedX += Math.Abs(_currentPlayerSpeedX * _SPEED_DECAY_PERCENTAGE);
+                _currentPlayerSpeedX += _SPEED_DECAY;
             }
             else if (_currentPlayerSpeedX > 0)
             {
-                _currentPlayerSpeedX -= Math.Abs(_currentPlayerSpeedX * _SPEED_DECAY_PERCENTAGE);
+                _currentPlayerSpeedX -= _SPEED_DECAY;
             }
         }
 
@@ -149,7 +149,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedY > 0)
             {
-                _currentPlayerSpeedY -= (Math.Abs(_currentPlayerSpeedY * _SPEED_DECAY_PERCENTAGE) + _SPEED_INCREASE);
+                _currentPlayerSpeedY -= _SPEED_DECAY + _SPEED_INCREASE;
             }
             else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
             {
@@ -161,7 +161,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedY < 0)
             {
-                _currentPlayerSpeedY += (Math.Abs(_currentPlayerSpeedY * _SPEED_DECAY_PERCENTAGE) + _SPEED_INCREASE);
+                _currentPlayerSpeedY += _SPEED_DECAY + _SPEED_INCREASE;
             }
             else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
             {
@@ -173,11 +173,11 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (_currentPlayerSpeedY < 0)
             {
-                _currentPlayerSpeedY += Math.Abs(_currentPlayerSpeedY * _SPEED_DECAY_PERCENTAGE);
+                _currentPlayerSpeedY += _SPEED_DECAY;
             }
             else if (_currentPlayerSpeedY > 0)
             {
-                _currentPlayerSpeedY -= Math.Abs(_currentPlayerSpeedY * _SPEED_DECAY_PERCENTAGE);
+                _currentPlayerSpeedY -= _SPEED_DECAY;
             }
         }
     }
