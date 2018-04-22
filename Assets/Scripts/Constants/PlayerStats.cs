@@ -44,6 +44,11 @@ public class PlayerStats {
         this.weight = weight;
     }
 
+    public int getCareerValue()
+    {
+        return (int)(yardsCovered * 1.4) * touchdowns + (stiffArms * 1000) + (brokenTackles * 800) * 100;
+    }
+
     public int getEnemiesDefeated() { return enemiesDefeated; }
     public float getYardsCovered() { return yardsCovered; }
     public int getStiffArms() { return stiffArms; }

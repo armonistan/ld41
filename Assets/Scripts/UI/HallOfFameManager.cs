@@ -11,7 +11,7 @@ public class HallOfFameManager : MonoBehaviour {
 	void Start () {
         for(int i=0; i<5; i++)
         {
-            addPlayerCard(PlayerGenerator.generate(0), i);
+            addPlayerCard(PlayerGenerator.generate(12500000), i);
         }
 	}
 
@@ -19,6 +19,7 @@ public class HallOfFameManager : MonoBehaviour {
     {
         PlayerCard card = Instantiate(playerCardPrefab, contentArea.transform);
         RectTransform cardTransform = card.GetComponentInChildren<RectTransform>();
+        card.renderCard(stats);
         //cardTransform.offsetMin = new Vector2(0, (listOrder * -800));
     }
 	

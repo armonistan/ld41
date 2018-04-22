@@ -758,7 +758,14 @@ MonoBehaviour:
   PlayerHeightLabel: {fileID: 114869279396641796}
   PlayerWeightLabel: {fileID: 114112882086444524}
   MilkLabel: {fileID: 114639464135378736}
+  CareerValue: {fileID: 0}
+  EnemiesDefeated: {fileID: 0}
+  Tackles: {fileID: 0}
+  StiffArms: {fileID: 0}
+  Yardage: {fileID: 0}
+  Touchdowns: {fileID: 0}
   selected: 0
+  hallOfFame: 0
 --- !u!114 &114073630300995618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1451,8 +1458,8 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 3
-    m_AlignByGeometry: 0
+    m_Alignment: 5
+    m_AlignByGeometry: 1
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
@@ -1778,7 +1785,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2736,8 +2743,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 97.75, y: 11.7}
-  m_SizeDelta: {x: 166.5, y: 39.09}
+  m_AnchoredPosition: {x: 93, y: 11.7}
+  m_SizeDelta: {x: 157, y: 39.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224571147158250850
 RectTransform:
@@ -3036,8 +3043,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 97.747, y: -19.2}
-  m_SizeDelta: {x: 166.5, y: 22.7}
+  m_AnchoredPosition: {x: 92.999, y: -19.2}
+  m_SizeDelta: {x: 157, y: 22.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224831415676332160
 RectTransform:
@@ -3055,7 +3062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 365.49, y: 544.68}
+  m_AnchoredPosition: {x: 255.87354, y: 825.2601}
   m_SizeDelta: {x: 730.98, y: 446.65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224867875547316894
