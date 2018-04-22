@@ -11,6 +11,8 @@ public class PlanExecutor : MonoBehaviour {
     public List<EnemyMap> EnemyPrefabs;
     public List<Vector3> SpawnPoints;
 
+    public int YardageGoal;
+
     public PlayerControl Player;
 
 	// Use this for initialization
@@ -20,6 +22,12 @@ public class PlanExecutor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (Player.transform.position.y >= YardageGoal)
+        {
+            Debug.Log("Win");
+            //TODO: Actually Win
+        }
+
 		foreach (Move move in ThePlan)
         {
             if (move.Yard <= Player.transform.position.y)
