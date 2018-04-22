@@ -746,18 +746,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f43f03996d8ed904398a5dde798dd5f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerNameLabel: {fileID: 1633364949083456}
-  ReversePlayerNameLabel: {fileID: 1128015185822858}
-  PlayerNumberLabel: {fileID: 1866707255816470}
-  BulkSlider: {fileID: 1884927774976766}
-  SpeedSlider: {fileID: 1160086691112682}
-  StyleSlider: {fileID: 1697525107387134}
-  PriceLabel: {fileID: 1372515024115344}
-  AbilityNameLabel: {fileID: 1501811260494250}
-  AbilityDescriptionLabel: {fileID: 1187331461659156}
-  PlayerHeightLabel: {fileID: 1247265819160434}
-  PlayerWeightLabel: {fileID: 1815226982318094}
-  MilkLabel: {fileID: 1337515124183798}
+  PlayerNameLabel: {fileID: 114715325511206018}
+  ReversePlayerNameLabel: {fileID: 114073630300995618}
+  PlayerNumberLabel: {fileID: 114142306810507718}
+  BulkSlider: {fileID: 114348152987283558}
+  SpeedSlider: {fileID: 114263900229588886}
+  StyleSlider: {fileID: 114739090935136342}
+  PriceLabel: {fileID: 114656284331337868}
+  AbilityNameLabel: {fileID: 114545334261731588}
+  AbilityDescriptionLabel: {fileID: 114475625383902380}
+  PlayerHeightLabel: {fileID: 114869279396641796}
+  PlayerWeightLabel: {fileID: 114112882086444524}
+  MilkLabel: {fileID: 114639464135378736}
   selected: 0
 --- !u!114 &114073630300995618
 MonoBehaviour:

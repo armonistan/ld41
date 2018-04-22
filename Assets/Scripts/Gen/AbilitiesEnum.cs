@@ -41,7 +41,7 @@ namespace PlayerAbilities
         public static Abilities getRandom()
         {
             Array abilitiesArray = Abilities.GetValues(typeof(Abilities));
-            return (Abilities) abilitiesArray.GetValue((int) (UnityEngine.Random.value * abilitiesArray.Length));
+            return (Abilities) abilitiesArray.GetValue((int)(UnityEngine.Random.value * (abilitiesArray.Length - 1)) + 1);
         }
 
         public static string GetAttributeDescription(object value)
