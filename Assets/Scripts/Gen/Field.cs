@@ -35,6 +35,8 @@ public class Field : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         _field = GetComponent<SpriteRenderer>();
+        _field.size = new Vector2(_field.size.x, 1.2f * _numberOfSections);
+
         _instanciatedEndzone = Instantiate(Endzone, Vector3.zero, Quaternion.identity);
 
         _instanciatedLeftEdge = Instantiate(EdgePrefab, Vector3.zero, Quaternion.identity);
@@ -45,7 +47,6 @@ public class Field : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        _field.size = new Vector2(_field.size.x, 1.2f * _numberOfSections);
         transform.position = new Vector3(0, _field.bounds.size.y / 2, 5);
 
         _instanciatedEndzone.transform.position = new Vector3(0, _field.bounds.size.y + Endzone.bounds.size.y / 2, 5);

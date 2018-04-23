@@ -13,6 +13,8 @@ public class PlanExecutor : MonoBehaviour {
     public List<EnemyMap> EnemyPrefabs;
     public List<Vector3> SpawnPoints;
 
+    public int Money = 500;
+
     public PlayerControl Player;
     public Field Field;
 
@@ -42,6 +44,7 @@ public class PlanExecutor : MonoBehaviour {
         {
             if (Player.transform.position.y >= YardageGoal * Field.YardLength)
             {
+                GameData.setMoney(GameData.getMoney() + Money);
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
 
