@@ -232,6 +232,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void Die()
     {
+        GameData.getCurrentPlayer().recordEnemyDefeated();
         Instantiate(DeadPrefab, new Vector3(transform.position.x, transform.position.y, 1), Quaternion.identity);
         Destroy(gameObject);
     }

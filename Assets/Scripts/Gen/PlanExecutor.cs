@@ -44,7 +44,8 @@ public class PlanExecutor : MonoBehaviour {
         {
             if (Player.transform.position.y >= YardageGoal * Field.YardLength)
             {
-                GameData.setMoney(GameData.getMoney() + Money);
+                GameData.getCurrentPlayer().recordYardsCovered(YardageGoal);
+                GameData.getCurrentPlayer().recordTouchdown();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
 

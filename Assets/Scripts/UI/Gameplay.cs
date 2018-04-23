@@ -17,7 +17,7 @@ public class Gameplay : MonoBehaviour {
 
         bulkSlider.maxValue = currentPlayer.getBulk();
         styleSlider.maxValue = currentPlayer.getStyle();
-        GamePlayer.InitializeStats(currentPlayer);
+        GamePlayer.InitializeStats();
 	}
 	
 	// Update is called once per frame

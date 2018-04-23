@@ -15,6 +15,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     }
 
     public GameObject DeadPlayer;
+    public Field FieldRenderer;
     private Animator _animationController;
 		
 	//directional controls
@@ -108,9 +109,11 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         UpdatePlayerPosition();
 	}
 
-    public void InitializeStats(PlayerStats stats)
+    public void InitializeStats()
     {
-        STYLE = stats.getStyle();
+        var stats = GameData.getCurrentPlayer();
+
+        STYLE = MaxStyle = stats.getStyle();
         BULK = stats.getBulk();
         PlayerMaxSpeed = stats.getSpeed();
     }
@@ -119,6 +122,9 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     {
         if (BULK <= 0)
         {
+            GameData.getCurrentPlayer().recordYardsCovered(transform.position.y / FieldRenderer.YardLength);
+            GameData.setMoney(GameData.getMoney() + GameData.getCurrentPlayer().getCareerValue());
+
             Instantiate(DeadPlayer, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
