@@ -47,7 +47,7 @@ public class PlayerStats {
 
     public int getCareerValue()
     {
-        return Mathf.CeilToInt(yardsCovered) * 100 + touchdowns * 10000 + stiffArms * 1000 + brokenTackles * 1500 + enemiesDefeated * 200;
+        return Mathf.CeilToInt(yardsCovered) * 500 + touchdowns * 20000 + stiffArms * 1200 + brokenTackles * 3000 + enemiesDefeated * 750;
     }
 
     public int getEnemiesDefeated() { return enemiesDefeated; }
