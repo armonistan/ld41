@@ -62,7 +62,8 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         if (State == States.StiffArmed)
         {
             HandlePlayerStiffArm();
-        } else if (State == States.StiffArmedTossed)
+        }
+        else if (State == States.StiffArmedTossed)
         {
             HandlePlayerStiffArmTossed();
         }
@@ -202,8 +203,9 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         else if (State == States.StiffArmed)
         {
             State = States.StiffArmedTossed;
+            GameData.getCurrentPlayer().recordStiffArm();
         }
-        else
+        else if (State != States.StiffArmedTossed)
         {
             HurtPlayer(player);
             Die();
@@ -231,11 +233,6 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         gameObject.transform.Translate(player.Velocity);
     }
 
-    protected virtual void HandleBeingStiffArmedTossed()
-    {
-        
-    }
-
     protected virtual void HandlePlayerSpinning()
     {
         Debug.Log("He is Spinning Two FAST");
@@ -258,12 +255,9 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
             _enemyToPlayerDeltaVector.x = this.transform.position.x - player.transform.position.x;
             _enemyToPlayerDeltaVector.y = this.transform.position.y - player.transform.position.y;
             Velocity = _enemyToPlayerDeltaVector;
-            MAX_SPEED = player.BULK * 10;
-            _SPEED_INCREASE = player.BULK * 10;
+            MAX_SPEED = _SPEED_INCREASE = player.BULK * 3;
             SetMovementSpeedToFollowPlayer();
             gameObject.transform.Translate(Velocity);
-
-            GameData.getCurrentPlayer().recordStiffArm();
         }
     }
 }

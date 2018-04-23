@@ -131,11 +131,12 @@ MonoBehaviour:
   SPEED_INCREASE: 0.2
   SPIN_DURATION: 0.5
   TACKLE_DURATION: 1
-  STIFF_ARM_DURATION: 1
+  STIFF_ARM_DURATION: 2
   StyleChargeTime: 4
   MaxStyle: 5
   TackleStyleCost: 2
   SpinStyleCost: 1
+  StiffArmStyleCost: 2
   STYLE: 5
   BULK: 5
 --- !u!212 &212366300199457492
