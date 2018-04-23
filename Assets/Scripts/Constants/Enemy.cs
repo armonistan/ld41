@@ -196,6 +196,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         }
         else if (player.State == PlayerControl.States.Tackling)
         {
+            GameData.getCurrentPlayer().recordBrokenTackle();
             Die();
         }
         else if (State == States.StiffArmed)
@@ -251,6 +252,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     {
         var player = FindObjectOfType<PlayerControl>();
         Debug.Log("tossed");
+
         if (player != null)
         {
             _enemyToPlayerDeltaVector.x = this.transform.position.x - player.transform.position.x;
@@ -260,6 +262,8 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
             _SPEED_INCREASE = player.BULK * 10;
             SetMovementSpeedToFollowPlayer();
             gameObject.transform.Translate(Velocity);
+
+            GameData.getCurrentPlayer().recordStiffArm();
         }
     }
 }

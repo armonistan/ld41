@@ -1643,6 +1643,11 @@ Prefab:
       propertyPath: FieldRenderer
       value: 
       objectReference: {fileID: 1168331478}
+    - target: {fileID: 114254281375184028, guid: f3263851adc34f54cb97e7ccae30ba4e,
+        type: 2}
+      propertyPath: STIFF_ARM_DURATION
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f3263851adc34f54cb97e7ccae30ba4e, type: 2}
   m_IsPrefabParent: 0
