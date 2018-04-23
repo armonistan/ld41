@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Field : MonoBehaviour {
-    public SpriteRenderer FieldSection;
     public SpriteRenderer Endzone;
     public int YardsPerSection;
 
     public PlanExecutor Plan;
 
     private bool _initialized;
+    private SpriteRenderer _field;
+    private SpriteRenderer _instanciatedEndzone;
 
     public float YardLength
     {
         get
         {
-            return FieldSection.bounds.size.y / YardsPerSection;
+            return _field.bounds.size.y / YardsPerSection / _numberOfSections;
         }
     }
 
@@ -29,22 +30,16 @@ public class Field : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        _field = GetComponent<SpriteRenderer>();
+        _instanciatedEndzone = Instantiate(Endzone, Vector3.zero, Quaternion.identity);
 	}
 
     // Update is called once per frame
     void Update()
     {
-        if (_numberOfSections > 0 && !_initialized)
-        {
-            for (var s = 0; s < _numberOfSections; s++)
-            {
-                Instantiate(FieldSection, new Vector3(0, FieldSection.bounds.size.y * s + FieldSection.bounds.size.y / 2, 1), Quaternion.identity, transform);
-            }
+        _field.size = new Vector2(_field.size.x, 1.2f * _numberOfSections);
+        transform.position = new Vector3(0, _field.bounds.size.y / 2, 1);
 
-            Instantiate(Endzone, new Vector3(0, FieldSection.bounds.size.y * _numberOfSections + Endzone.bounds.size.y / 2, 1), Quaternion.identity, transform);
-
-            _initialized = true;
-        }
+        _instanciatedEndzone.transform.position = new Vector3(0, _field.bounds.size.y + Endzone.bounds.size.y / 2, 1);
     }
 }

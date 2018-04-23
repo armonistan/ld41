@@ -7,8 +7,8 @@ public class TackleEnemy : Enemy
 {
     public int StartTackleDistance = 10;
     public float CHARGE_DURATION = 2f;
+    public float TackleSpeed = 1f;
     private float _chargeTimer = 0f;
-    private float _TACKLE_SPEED = 1f;
 
     protected override void Start()
     {
@@ -20,7 +20,8 @@ public class TackleEnemy : Enemy
         if(State == States.Pursuing && _enemyToPlayerDeltaVector.magnitude > StartTackleDistance)
         {
             SetMovementSpeedToFollowPlayer();
-        } else if(State == States.Pursuing)
+        }
+        else if(State == States.Pursuing)
         {
             _currentSpeedX = 0;
             _currentSpeedY = 0;
@@ -42,21 +43,21 @@ public class TackleEnemy : Enemy
         //left right
         if (_enemyToPlayerDeltaVector.x > 0)
         {
-            _currentSpeedX -= _TACKLE_SPEED;
+            _currentSpeedX -= TackleSpeed;
         }
         else if (_enemyToPlayerDeltaVector.x < 0)
         {
-             _currentSpeedX += _TACKLE_SPEED;
+             _currentSpeedX += TackleSpeed;
         }
 
         //forward backward
         if (_enemyToPlayerDeltaVector.y > 0)
         {
-            _currentSpeedY -= _TACKLE_SPEED;
+            _currentSpeedY -= TackleSpeed;
         }
         else if (_enemyToPlayerDeltaVector.y < 0)
         {
-             _currentSpeedY += _TACKLE_SPEED;
+             _currentSpeedY += TackleSpeed;
         }
     }
 

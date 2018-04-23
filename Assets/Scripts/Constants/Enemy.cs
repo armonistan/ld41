@@ -36,6 +36,8 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     protected float _currentSpeedY = 0;
     protected Vector2 _enemyToPlayerDeltaVector = new Vector2();
 
+    public GameObject DeadPrefab;
+
     public Vector2 Velocity
     {
         get
@@ -191,6 +193,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         else
         {
             HurtPlayer(player);
+            HandlePlayerTackle();
         }
     }
 
@@ -208,7 +211,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void HurtPlayer(PlayerControl player)
     {
-        Debug.Log("Deducting HP");
+        player.BULK--;
     }
 
     protected virtual void HandlePlayerStiffArm()
@@ -223,6 +226,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void HandlePlayerTackle()
     {
+        Instantiate(DeadPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
