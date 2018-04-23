@@ -5,13 +5,18 @@ using UnityEngine.UI;
 
 public class Gameplay : MonoBehaviour {
     public GameObject deathOverlay;
+    public GameObject ControlOverlay;
     public PlayerControl GamePlayer;
     public Slider bulkSlider;
     public Slider styleSlider;
     private PlayerStats currentPlayer;
 
-	// Use this for initialization
-	void Start () {
+    private bool paused = false;
+    //pause
+    public KeyCode Pause = KeyCode.Q;
+
+    // Use this for initialization
+    void Start () {
         currentPlayer = GameData.getCurrentPlayer();
         deathOverlay.SetActive(false);
 
@@ -31,5 +36,22 @@ public class Gameplay : MonoBehaviour {
             bulkSlider.value = GamePlayer.BULK;
             styleSlider.value = GamePlayer.STYLE;
         }
-	}
+
+        if (!paused && Input.GetKeyDown(Pause))
+        {
+            ControlOverlay.SetActive(true);
+            paused = true;
+            Time.timeScale = 0;
+
+            return;
+        }
+        else if (paused && Input.GetKeyDown(Pause))
+        {
+            ControlOverlay.SetActive(false);
+            paused = false;
+            Time.timeScale = 1;
+
+            return;
+        }
+    }
 }
