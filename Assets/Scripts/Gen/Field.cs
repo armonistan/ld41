@@ -12,6 +12,7 @@ public class Field : MonoBehaviour {
     private bool _initialized;
     private SpriteRenderer _field;
     private SpriteRenderer _instanciatedEndzone;
+    private SpriteRenderer _instanciatedPlayerEndzone;
     private BoxCollider2D _instanciatedLeftEdge;
     private BoxCollider2D _instanciatedRightEdge;
     private BoxCollider2D _instanciatedBottomEdge;
@@ -38,6 +39,7 @@ public class Field : MonoBehaviour {
         _field.size = new Vector2(_field.size.x, 1.2f * _numberOfSections);
 
         _instanciatedEndzone = Instantiate(Endzone, Vector3.zero, Quaternion.identity);
+        _instanciatedPlayerEndzone = Instantiate(Endzone, Vector3.zero, Quaternion.identity);
 
         _instanciatedLeftEdge = Instantiate(EdgePrefab, Vector3.zero, Quaternion.identity);
         _instanciatedRightEdge = Instantiate(EdgePrefab, Vector3.zero, Quaternion.identity);
@@ -50,6 +52,9 @@ public class Field : MonoBehaviour {
         transform.position = new Vector3(0, _field.bounds.size.y / 2, 5);
 
         _instanciatedEndzone.transform.position = new Vector3(0, _field.bounds.size.y + Endzone.bounds.size.y / 2, 5);
+        _instanciatedPlayerEndzone.transform.position = new Vector3(0, Endzone.bounds.size.y / -2, 5);
+        _instanciatedPlayerEndzone.flipX = true;
+        _instanciatedPlayerEndzone.flipY = true;
 
         _instanciatedLeftEdge.transform.position = new Vector3((_field.bounds.size.x / 2 + 0.5f) * -1, transform.position.y);
         _instanciatedLeftEdge.size = new Vector2(1,  _field.bounds.size.y);
