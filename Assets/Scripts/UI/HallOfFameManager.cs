@@ -19,7 +19,6 @@ public class HallOfFameManager : MonoBehaviour {
     private void addPlayerCard(PlayerStats stats)
     {
         PlayerCard card = Instantiate(playerCardPrefab, contentArea.transform);
-        RectTransform cardTransform = card.GetComponentInChildren<RectTransform>();
         card.renderCard(stats);
     }
 }
