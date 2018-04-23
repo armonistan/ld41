@@ -372,7 +372,8 @@ MonoBehaviour:
   PlayerMaxSpeed: 6
   SPEED_DECAY: 0.05
   SPEED_INCREASE: 0.2
-  MaxSpeedModifier: 0.9
+  MaxSpeedModifier: 0.5
+  MinMaxSpeed: 2
   SPIN_DURATION: 0.5
   TACKLE_DURATION: 1
   STIFF_ARM_DURATION: 2

@@ -51,6 +51,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     public float SPEED_DECAY = .05f;
     public float SPEED_INCREASE = .2f;
     public float MaxSpeedModifier = 0.9f;
+    public float MinMaxSpeed = 2f;
     public float SPIN_DURATION = 1f;
     public float TACKLE_DURATION = 1f;
     public float STIFF_ARM_DURATION = 1f;
@@ -111,7 +112,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
         STYLE = MaxStyle = stats.getStyle();
         BULK = stats.getBulk();
-        PlayerMaxSpeed = stats.getSpeed() * MaxSpeedModifier;
+        PlayerMaxSpeed = stats.getSpeed() * MaxSpeedModifier + MinMaxSpeed;
     }
 
     private void HandleBulk()
