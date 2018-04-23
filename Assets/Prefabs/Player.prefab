@@ -362,13 +362,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeadPlayer: {fileID: 1497024785604142, guid: 904eb2ffa0c89504d8ead045de324537, type: 2}
   FieldRenderer: {fileID: 0}
-  MoveLeft: 276
-  MoveRight: 275
-  MoveForward: 273
-  MoveBackward: 274
+  MoveLeft: 97
+  MoveRight: 100
+  MoveForward: 119
+  MoveBackward: 115
   SpinKey: 32
-  TackleKey: 114
-  StiffArmKey: 101
+  TackleKey: 111
+  StiffArmKey: 112
   PlayerMaxSpeed: 6
   SPEED_DECAY: 0.05
   SPEED_INCREASE: 0.2

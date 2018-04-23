@@ -98,12 +98,6 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	
 	// Update is called once per frame
 	void Update () {
-        //might be needed later
-        /*if (Time.timeScale == GameControl.Paused)
-	    {
-	        return;
-	    }*/
-
         HandleBulk();
         HandleStyle();
         UpdatePlayerMovementInput();
@@ -241,7 +235,6 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         CheckSpin();
         CheckTackle();
         CheckStiffArm();
-        Debug.Log(State);
     }
 
     void CheckSpin()
