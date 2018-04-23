@@ -124,6 +124,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     {
         if (BULK <= 0)
         {
+            gameObject.GetComponents<AudioSource>()[3].Play();
             GameData.getCurrentPlayer().recordYardsCovered(transform.position.y / FieldRenderer.YardLength);
             GameData.setMoney(GameData.getMoney() + GameData.getCurrentPlayer().getCareerValue());
 
