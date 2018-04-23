@@ -13,10 +13,13 @@ public class PlanExecutor : MonoBehaviour {
     public List<EnemyMap> EnemyPrefabs;
     public List<Vector3> SpawnPoints;
 
+    public int Money = 500;
+
     public PlayerControl Player;
     public Field Field;
 
     private Camera _camera;
+    private bool playTouchdown = true;
 
     public int YardageGoal
     {
@@ -38,26 +41,36 @@ public class PlanExecutor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Player.transform.position.y >= YardageGoal * Field.YardLength)
+        if (Player != null)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-		foreach (Move move in ThePlan)
-        {
-            if (move.Yard <= Player.transform.position.y / Field.YardLength)
+            if (Player.transform.position.y >= YardageGoal * Field.YardLength)
             {
-                for (var i = 0; i < move.Enemies.Length; i++)
-                {
-                    createEnemy(move.Enemies[i], SpawnPoints[i % SpawnPoints.Count]);
+                if (playTouchdown) { 
+                    gameObject.GetComponent<AudioSource>().Play();
+                    playTouchdown = false;
                 }
 
-                TheExecutedPlan.Add(move);
+                GameData.getCurrentPlayer().recordYardsCovered(YardageGoal);
+                GameData.getCurrentPlayer().recordTouchdown();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
-        }
 
-        var completedMoves = TheExecutedPlan.Intersect(ThePlan);
-        ThePlan.RemoveAll((Move move) => completedMoves.Contains(move));
+            foreach (Move move in ThePlan)
+            {
+                if (move.Yard <= Player.transform.position.y / Field.YardLength)
+                {
+                    for (var i = 0; i < move.Enemies.Length; i++)
+                    {
+                        createEnemy(move.Enemies[i], SpawnPoints[i % SpawnPoints.Count]);
+                    }
+
+                    TheExecutedPlan.Add(move);
+                }
+            }
+
+            var completedMoves = TheExecutedPlan.Intersect(ThePlan);
+            ThePlan.RemoveAll((Move move) => completedMoves.Contains(move));
+        }
 	}
 
     private void createEnemy(EnemyType enemy, Vector3 position)

@@ -35,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1704268817177464}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 7, y: 7, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -53,6 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Endzone: {fileID: 212245837545611448, guid: b65c8b38a8072b34f8dcdf98881b8a6c, type: 2}
+  EdgePrefab: {fileID: 61862987485908158, guid: 65172f1b94711234b9869d94270eae8d,
+    type: 2}
   YardsPerSection: 40
   Plan: {fileID: 0}
 --- !u!212 &212128861394206108

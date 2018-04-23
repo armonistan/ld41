@@ -62,7 +62,8 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         if (State == States.StiffArmed)
         {
             HandlePlayerStiffArm();
-        } else if (State == States.StiffArmedTossed)
+        }
+        else if (State == States.StiffArmedTossed)
         {
             HandlePlayerStiffArmTossed();
         }
@@ -70,8 +71,8 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         {
             UpdateMovementVector();
             UpdateMovementSpeed();
+            gameObject.transform.Translate(Velocity);
         }
-        gameObject.transform.Translate(Velocity);
     }
 
     protected virtual void UpdateMovementVector()
@@ -83,9 +84,12 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     {
         var player = FindObjectOfType<PlayerControl>();
 
-        _enemyToPlayerDeltaVector.x = player.transform.position.x - this.transform.position.x;
-        _enemyToPlayerDeltaVector.y = player.transform.position.y - this.transform.position.y;
-        Velocity = _enemyToPlayerDeltaVector;
+        if (player != null)
+        {
+            _enemyToPlayerDeltaVector.x = player.transform.position.x - this.transform.position.x;
+            _enemyToPlayerDeltaVector.y = player.transform.position.y - this.transform.position.y;
+            Velocity = _enemyToPlayerDeltaVector;
+        }
     }
 
     protected virtual void UpdateMovementSpeed()
@@ -168,7 +172,10 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        
+        if (other.tag == "Edge" || other.tag == "Enemy")
+        {
+            Die();
+        }
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -180,20 +187,28 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
             return;
         }
 
-        State = (player.State == PlayerControl.States.StiffArming) ? States.StiffArmed : State;
-
-        if (player.State == PlayerControl.States.Spinning)
+        if (player.State == PlayerControl.States.StiffArming)
+        {
+            State = States.StiffArmed;
+        }
+        else if (player.State == PlayerControl.States.Spinning)
         {
             HandlePlayerSpinning();
         }
         else if (player.State == PlayerControl.States.Tackling)
         {
-            HandlePlayerTackle();
+            GameData.getCurrentPlayer().recordBrokenTackle();
+            Die();
         }
-        else
+        else if (State == States.StiffArmed)
+        {
+            State = States.StiffArmedTossed;
+            GameData.getCurrentPlayer().recordStiffArm();
+        }
+        else if (State != States.StiffArmedTossed)
         {
             HurtPlayer(player);
-            HandlePlayerTackle();
+            Die();
         }
     }
 
@@ -205,18 +220,21 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         {
             return;
         }
-
-        State = (State == States.StiffArmed) ? States.StiffArmedTossed : State;
     }
 
     protected virtual void HurtPlayer(PlayerControl player)
     {
         player.BULK--;
+        System.Random r = new System.Random();
+        int soundIndex = (r.Next(1, 3));
+        Debug.Log(soundIndex);
+        player.gameObject.GetComponents<AudioSource>()[soundIndex].Play();
     }
 
     protected virtual void HandlePlayerStiffArm()
     {
-        Debug.Log("Being Stiff Armed");
+        var player = FindObjectOfType<PlayerControl>();
+        gameObject.transform.Translate(player.Velocity);
     }
 
     protected virtual void HandlePlayerSpinning()
@@ -224,14 +242,26 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         Debug.Log("He is Spinning Two FAST");
     }
 
-    protected virtual void HandlePlayerTackle()
+    protected virtual void Die()
     {
-        Instantiate(DeadPrefab, transform.position, Quaternion.identity);
+        GameData.getCurrentPlayer().recordEnemyDefeated();
+        Instantiate(DeadPrefab, new Vector3(transform.position.x, transform.position.y, 1), Quaternion.identity);
         Destroy(gameObject);
     }
 
     protected virtual void HandlePlayerStiffArmTossed()
     {
-        Debug.Log("He tossed me?");
+        var player = FindObjectOfType<PlayerControl>();
+        Debug.Log("tossed");
+
+        if (player != null)
+        {
+            _enemyToPlayerDeltaVector.x = this.transform.position.x - player.transform.position.x;
+            _enemyToPlayerDeltaVector.y = this.transform.position.y - player.transform.position.y;
+            Velocity = _enemyToPlayerDeltaVector;
+            MAX_SPEED = _SPEED_INCREASE = player.BULK * 3;
+            SetMovementSpeedToFollowPlayer();
+            gameObject.transform.Translate(Velocity);
+        }
     }
 }

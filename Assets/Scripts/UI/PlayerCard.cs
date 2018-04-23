@@ -48,7 +48,7 @@ public class PlayerCard : MonoBehaviour {
             EnemiesDefeated.text = player.getEnemiesDefeated().ToString();
             Tackles.text = player.getBrokenTackles().ToString();
             StiffArms.text = player.getStiffArms().ToString();
-            Yardage.text = player.getYardsCovered().ToString();
+            Yardage.text = player.getYardsCovered().ToString("F2");
             Touchdowns.text = player.getTouchdowns().ToString();
         }
     }

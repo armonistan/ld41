@@ -13,6 +13,10 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         StiffArming,
         Tackling
     }
+
+    public GameObject DeadPlayer;
+    public Field FieldRenderer;
+    private Animator _animationController;
 		
 	//directional controls
 	public KeyCode MoveLeft = KeyCode.LeftArrow;
@@ -36,6 +40,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     private float spinTimer = 0f;
     private float tackleTimer = 0f;
     private float stiffArmTimer = 0f;
+    private float _styleTimer = 0f;
 
     //constants
     private float _LEFT_X = -1;
@@ -45,9 +50,16 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     public float SPEED_DECAY = .05f;
     public float SPEED_INCREASE = .2f;
+    public float MaxSpeedModifier = 0.9f;
     public float SPIN_DURATION = 1f;
     public float TACKLE_DURATION = 1f;
     public float STIFF_ARM_DURATION = 1f;
+
+    public float StyleChargeTime = 4f;
+    public int MaxStyle = 5;
+    public int TackleStyleCost = 2;
+    public int SpinStyleCost = 1;
+    public int StiffArmStyleCost = 3;
 
     public int STYLE = 5;
     public int BULK = 5;
@@ -70,6 +82,8 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     // Use this for initialization
     void Start () {
         State = States.Default;
+        _animationController = GetComponent<Animator>();
+
 		//holding onto for reference later
 		/*
         if (FindObjectOfType<GameControl>().GetGameState() == GameControl.States.EasyMode)
@@ -90,10 +104,53 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	        return;
 	    }*/
 
+        HandleBulk();
+        HandleStyle();
         UpdatePlayerMovementInput();
         UpdatePlayerSpecialInput();
         UpdatePlayerPosition();
 	}
+
+    public void InitializeStats()
+    {
+        var stats = GameData.getCurrentPlayer();
+
+        STYLE = MaxStyle = stats.getStyle();
+        BULK = stats.getBulk();
+        PlayerMaxSpeed = stats.getSpeed() * MaxSpeedModifier;
+    }
+
+    private void HandleBulk()
+    {
+        if (BULK <= 0)
+        {
+            GameData.getCurrentPlayer().recordYardsCovered(transform.position.y / FieldRenderer.YardLength);
+            GameData.setMoney(GameData.getMoney() + GameData.getCurrentPlayer().getCareerValue());
+
+            Instantiate(DeadPlayer, transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void HandleStyle()
+    {
+        if (STYLE < MaxStyle)
+        {
+            if (_styleTimer < StyleChargeTime)
+            {
+                _styleTimer += Time.deltaTime;
+            }
+            else
+            {
+                STYLE++;
+                _styleTimer = 0f;
+            }
+        }
+        else
+        {
+            _styleTimer = 0f;
+        }
+    }
 
     private void UpdatePlayerPosition()
     {
@@ -189,9 +246,12 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     void CheckSpin()
     {
-        if (Input.GetKeyDown(SpinKey) && State == States.Default)
+        if (STYLE >= SpinStyleCost && Input.GetKeyDown(SpinKey) && State == States.Default)
         {
+            gameObject.GetComponents<AudioSource>()[0].Play();
+            STYLE -= SpinStyleCost;
             State = States.Spinning;
+            _animationController.SetTrigger("spinning");
         }
         else if (State == States.Spinning)
         {
@@ -202,15 +262,18 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
             {
                 spinTimer = 0f;
                 State = States.Default;
+                _animationController.SetTrigger("running");
             }
         }
     }
 
     void CheckTackle()
     {
-        if (Input.GetKeyDown(TackleKey) && State == States.Default)
+        if (STYLE >= TackleStyleCost && Input.GetKeyDown(TackleKey) && State == States.Default)
         {
+            STYLE -= TackleStyleCost;
             State = States.Tackling;
+            _animationController.SetTrigger("tackling");
         }
         else if (State == States.Tackling)
         {
@@ -222,25 +285,28 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
             {
                 tackleTimer = 0f;
                 State = States.Default;
+                _animationController.SetTrigger("running");
             }
         }
     }
 
     void CheckStiffArm()
     {
-        if (Input.GetKeyDown(StiffArmKey) && State == States.Default)
+        if (STYLE >= StiffArmStyleCost && Input.GetKeyDown(StiffArmKey) && State == States.Default)
         {
+            STYLE -= StiffArmStyleCost;
             State = States.StiffArming;
+            _animationController.SetTrigger("stiffing");
         }
         else if (State == States.StiffArming)
         {
             if (Input.GetKeyDown(StiffArmKey))
             {
-                Debug.Log("Toss");
                 stiffArmTimer = 0f;
                 State = States.Default;
+                _animationController.SetTrigger("running");
             }
-            else if (stiffArmTimer <= TACKLE_DURATION)
+            else if (stiffArmTimer <= STIFF_ARM_DURATION)
             {
                 stiffArmTimer += Time.deltaTime;
             }
@@ -248,6 +314,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
             {
                 stiffArmTimer = 0f;
                 State = States.Default;
+                _animationController.SetTrigger("running");
             }
         }
     }
@@ -284,7 +351,10 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("enter collide");
+        if (other.tag == "Edge")
+        {
+            BULK = 0;
+        }
     }
 
     void OnTriggerStay2D(Collider2D other)

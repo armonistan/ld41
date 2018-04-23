@@ -13,16 +13,18 @@ public class Gameplay : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         currentPlayer = GameData.getCurrentPlayer();
-        deathOverlay.active = false;
+        deathOverlay.SetActive(false);
+
         bulkSlider.maxValue = currentPlayer.getBulk();
         styleSlider.maxValue = currentPlayer.getStyle();
+        GamePlayer.InitializeStats();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (GamePlayer.BULK <= 0)
         {
-            deathOverlay.active = true;
+            deathOverlay.SetActive(true);
             GameData.retireCurrentPlayer();
         } else
         {
