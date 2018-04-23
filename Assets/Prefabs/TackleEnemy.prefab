@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 58309041711538834}
   - component: {fileID: 50300368237866424}
   - component: {fileID: 114145315941846250}
+  - component: {fileID: 95461697405435706}
   m_Layer: 0
   m_Name: TackleEnemy
   m_TagString: Untagged
@@ -78,6 +79,23 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.12
+--- !u!95 &95461697405435706
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1493031549137348}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 03c3af91162020b40866a11de195fecd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114145315941846250
 MonoBehaviour:
   m_ObjectHideFlags: 1

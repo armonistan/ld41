@@ -38,8 +38,8 @@ public class Field : MonoBehaviour {
     void Update()
     {
         _field.size = new Vector2(_field.size.x, 1.2f * _numberOfSections);
-        transform.position = new Vector3(0, _field.bounds.size.y / 2, 1);
+        transform.position = new Vector3(0, _field.bounds.size.y / 2, 5);
 
-        _instanciatedEndzone.transform.position = new Vector3(0, _field.bounds.size.y + Endzone.bounds.size.y / 2, 1);
+        _instanciatedEndzone.transform.position = new Vector3(0, _field.bounds.size.y + Endzone.bounds.size.y / 2, 5);
     }
 }
