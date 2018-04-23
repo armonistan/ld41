@@ -301,7 +301,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
                 stiffArmTimer = 0f;
                 State = States.Default;
             }
-            else if (stiffArmTimer <= TACKLE_DURATION)
+            else if (stiffArmTimer <= STIFF_ARM_DURATION)
             {
                 stiffArmTimer += Time.deltaTime;
             }

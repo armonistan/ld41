@@ -70,8 +70,8 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         {
             UpdateMovementVector();
             UpdateMovementSpeed();
+            gameObject.transform.Translate(Velocity);
         }
-        gameObject.transform.Translate(Velocity);
     }
 
     protected virtual void UpdateMovementVector()
@@ -186,15 +186,21 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
             return;
         }
 
-        State = (player.State == PlayerControl.States.StiffArming) ? States.StiffArmed : State;
-
-        if (player.State == PlayerControl.States.Spinning)
+        if (player.State == PlayerControl.States.StiffArming)
+        {
+            State = States.StiffArmed;
+        }
+        else if (player.State == PlayerControl.States.Spinning)
         {
             HandlePlayerSpinning();
         }
         else if (player.State == PlayerControl.States.Tackling)
         {
             Die();
+        }
+        else if (State == States.StiffArmed)
+        {
+            State = States.StiffArmedTossed;
         }
         else
         {
@@ -211,8 +217,6 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         {
             return;
         }
-
-        State = (State == States.StiffArmed) ? States.StiffArmedTossed : State;
     }
 
     protected virtual void HurtPlayer(PlayerControl player)
@@ -222,7 +226,13 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void HandlePlayerStiffArm()
     {
-        Debug.Log("Being Stiff Armed");
+        var player = FindObjectOfType<PlayerControl>();
+        gameObject.transform.Translate(player.Velocity);
+    }
+
+    protected virtual void HandleBeingStiffArmedTossed()
+    {
+        
     }
 
     protected virtual void HandlePlayerSpinning()
@@ -239,6 +249,17 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void HandlePlayerStiffArmTossed()
     {
-        Debug.Log("He tossed me?");
+        var player = FindObjectOfType<PlayerControl>();
+        Debug.Log("tossed");
+        if (player != null)
+        {
+            _enemyToPlayerDeltaVector.x = this.transform.position.x - player.transform.position.x;
+            _enemyToPlayerDeltaVector.y = this.transform.position.y - player.transform.position.y;
+            Velocity = _enemyToPlayerDeltaVector;
+            MAX_SPEED = player.BULK * 10;
+            _SPEED_INCREASE = player.BULK * 10;
+            SetMovementSpeedToFollowPlayer();
+            gameObject.transform.Translate(Velocity);
+        }
     }
 }
