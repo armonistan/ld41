@@ -292,6 +292,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         if (Input.GetKeyDown(StiffArmKey) && State == States.Default)
         {
             State = States.StiffArming;
+            _animationController.SetTrigger("stiffing");
         }
         else if (State == States.StiffArming)
         {
@@ -309,6 +310,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
             {
                 stiffArmTimer = 0f;
                 State = States.Default;
+                _animationController.SetTrigger("running");
             }
         }
     }
