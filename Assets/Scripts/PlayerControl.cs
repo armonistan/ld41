@@ -15,6 +15,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     }
 
     public GameObject DeadPlayer;
+    private Animator _animationController;
 		
 	//directional controls
 	public KeyCode MoveLeft = KeyCode.LeftArrow;
@@ -72,6 +73,8 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     // Use this for initialization
     void Start () {
         State = States.Default;
+        _animationController = GetComponent<Animator>();
+
 		//holding onto for reference later
 		/*
         if (FindObjectOfType<GameControl>().GetGameState() == GameControl.States.EasyMode)
@@ -204,6 +207,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         if (Input.GetKeyDown(SpinKey) && State == States.Default)
         {
             State = States.Spinning;
+            _animationController.SetTrigger("spinning");
         }
         else if (State == States.Spinning)
         {
@@ -223,6 +227,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         if (Input.GetKeyDown(TackleKey) && State == States.Default)
         {
             State = States.Tackling;
+            _animationController.SetTrigger("tackling");
         }
         else if (State == States.Tackling)
         {
