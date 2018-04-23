@@ -90,8 +90,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MAX_SPEED: 1
+  STIFF_ARM_TOSS_DURATION: 10
+  DeadPrefab: {fileID: 1559326283356452, guid: 397f436dc6042684db87d82c4454b3fc, type: 2}
   StartTackleDistance: 5
   CHARGE_DURATION: 1
+  TackleSpeed: 0.1
 --- !u!212 &212422275289476562
 SpriteRenderer:
   m_ObjectHideFlags: 1

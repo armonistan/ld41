@@ -9,8 +9,8 @@ namespace Assets.Scripts.Gen
     public static class PlanGenerator
     {
         public static readonly int GENERATOR_POOL = 100;
-        public static readonly int MIN_MOVES = 3;
-        public static readonly int MAX_MOVES = 10;
+        public static readonly int MIN_MOVES = 10;
+        public static readonly int MAX_MOVES = 50;
         public static readonly int YARDS_PER_MOVE = 10;
         public static readonly int MIN_ENEMIES_PER_MOVE = 1;
         public static readonly int MAX_ENEMIES_PER_MOVE = 5;
