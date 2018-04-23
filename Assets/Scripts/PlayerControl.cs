@@ -58,6 +58,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     public int MaxStyle = 5;
     public int TackleStyleCost = 2;
     public int SpinStyleCost = 1;
+    public int StiffArmStyleCost = 3;
 
     public int STYLE = 5;
     public int BULK = 5;
@@ -289,8 +290,9 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     void CheckStiffArm()
     {
-        if (Input.GetKeyDown(StiffArmKey) && State == States.Default)
+        if (STYLE >= StiffArmStyleCost && Input.GetKeyDown(StiffArmKey) && State == States.Default)
         {
+            STYLE -= StiffArmStyleCost;
             State = States.StiffArming;
             _animationController.SetTrigger("stiffing");
         }
@@ -298,9 +300,9 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         {
             if (Input.GetKeyDown(StiffArmKey))
             {
-                Debug.Log("Toss");
                 stiffArmTimer = 0f;
                 State = States.Default;
+                _animationController.SetTrigger("running");
             }
             else if (stiffArmTimer <= STIFF_ARM_DURATION)
             {
