@@ -36,6 +36,8 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     protected float _currentSpeedY = 0;
     protected Vector2 _enemyToPlayerDeltaVector = new Vector2();
 
+    public GameObject DeadPrefab;
+
     public Vector2 Velocity
     {
         get
@@ -81,9 +83,12 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     {
         var player = FindObjectOfType<PlayerControl>();
 
-        _enemyToPlayerDeltaVector.x = player.transform.position.x - this.transform.position.x;
-        _enemyToPlayerDeltaVector.y = player.transform.position.y - this.transform.position.y;
-        Velocity = _enemyToPlayerDeltaVector;
+        if (player != null)
+        {
+            _enemyToPlayerDeltaVector.x = player.transform.position.x - this.transform.position.x;
+            _enemyToPlayerDeltaVector.y = player.transform.position.y - this.transform.position.y;
+            Velocity = _enemyToPlayerDeltaVector;
+        }
     }
 
     protected virtual void UpdateMovementSpeed()
@@ -166,7 +171,10 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        
+        if (other.tag == "Edge" || other.tag == "Enemy")
+        {
+            Die();
+        }
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -186,11 +194,12 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         }
         else if (player.State == PlayerControl.States.Tackling)
         {
-            HandlePlayerTackle();
+            Die();
         }
         else
         {
             HurtPlayer(player);
+            Die();
         }
     }
 
@@ -208,7 +217,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void HurtPlayer(PlayerControl player)
     {
-        Debug.Log("Deducting HP");
+        player.BULK--;
     }
 
     protected virtual void HandlePlayerStiffArm()
@@ -221,8 +230,10 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
         Debug.Log("He is Spinning Two FAST");
     }
 
-    protected virtual void HandlePlayerTackle()
+    protected virtual void Die()
     {
+        GameData.getCurrentPlayer().recordEnemyDefeated();
+        Instantiate(DeadPrefab, new Vector3(transform.position.x, transform.position.y, 1), Quaternion.identity);
         Destroy(gameObject);
     }
 

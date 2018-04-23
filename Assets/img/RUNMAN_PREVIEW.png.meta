@@ -15,6 +15,10 @@ TextureImporter:
     21300016: RUNMAN_PREVIEW_8
     21300018: RUNMAN_PREVIEW_9
     21300020: RUNMAN_PREVIEW_10
+    21300022: RUNMAN_PREVIEW_11
+    21300024: RUNMAN_PREVIEW_12
+    21300026: RUNMAN_PREVIEW_13
+    21300028: RUNMAN_PREVIEW_14
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -266,6 +270,62 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 440
+        y: 0
+        width: 44
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RUNMAN_PREVIEW_11
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 0
+        width: 44
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RUNMAN_PREVIEW_12
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 0
+        width: 44
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RUNMAN_PREVIEW_13
+      rect:
+        serializedVersion: 2
+        x: 572
+        y: 0
+        width: 44
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RUNMAN_PREVIEW_14
+      rect:
+        serializedVersion: 2
+        x: 616
         y: 0
         width: 44
         height: 64
