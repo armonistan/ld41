@@ -222,6 +222,10 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     protected virtual void HurtPlayer(PlayerControl player)
     {
         player.BULK--;
+        System.Random r = new System.Random();
+        int soundIndex = (r.Next(1, 3));
+        Debug.Log(soundIndex);
+        player.gameObject.GetComponents<AudioSource>()[soundIndex].Play();
     }
 
     protected virtual void HandlePlayerStiffArm()
