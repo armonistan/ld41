@@ -20,8 +20,12 @@ public class Gameplay : MonoBehaviour {
         currentPlayer = GameData.getCurrentPlayer();
         deathOverlay.SetActive(false);
 
-        bulkSlider.maxValue = currentPlayer.getBulk();
-        styleSlider.maxValue = currentPlayer.getStyle();
+        bulkSlider.maxValue = 7;
+        styleSlider.maxValue = 7;
+
+        bulkSlider.value = currentPlayer.getBulk();
+        styleSlider.value = currentPlayer.getStyle();
+
         GamePlayer.InitializeStats();
 	}
 	
