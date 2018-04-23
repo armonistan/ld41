@@ -171,7 +171,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Edge")
+        if (other.tag == "Edge" || other.tag == "Enemy")
         {
             Die();
         }
@@ -232,7 +232,7 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void Die()
     {
-        Instantiate(DeadPrefab, transform.position, Quaternion.identity);
+        Instantiate(DeadPrefab, new Vector3(transform.position.x, transform.position.y, 1), Quaternion.identity);
         Destroy(gameObject);
     }
 

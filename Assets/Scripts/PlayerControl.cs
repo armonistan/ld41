@@ -39,6 +39,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     private float spinTimer = 0f;
     private float tackleTimer = 0f;
     private float stiffArmTimer = 0f;
+    private float _styleTimer = 0f;
 
     //constants
     private float _LEFT_X = -1;
@@ -51,6 +52,11 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     public float SPIN_DURATION = 1f;
     public float TACKLE_DURATION = 1f;
     public float STIFF_ARM_DURATION = 1f;
+
+    public float StyleChargeTime = 4f;
+    public int MaxStyle = 5;
+    public int TackleStyleCost = 2;
+    public int SpinStyleCost = 1;
 
     public int STYLE = 5;
     public int BULK = 5;
@@ -95,18 +101,46 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	        return;
 	    }*/
 
-        HandleDeath();
+        HandleBulk();
+        HandleStyle();
         UpdatePlayerMovementInput();
         UpdatePlayerSpecialInput();
         UpdatePlayerPosition();
 	}
 
-    private void HandleDeath()
+    public void InitializeStats(PlayerStats stats)
+    {
+        STYLE = stats.getStyle();
+        BULK = stats.getBulk();
+        PlayerMaxSpeed = stats.getSpeed();
+    }
+
+    private void HandleBulk()
     {
         if (BULK <= 0)
         {
             Instantiate(DeadPlayer, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
+        }
+    }
+
+    private void HandleStyle()
+    {
+        if (STYLE < MaxStyle)
+        {
+            if (_styleTimer < StyleChargeTime)
+            {
+                _styleTimer += Time.deltaTime;
+            }
+            else
+            {
+                STYLE++;
+                _styleTimer = 0f;
+            }
+        }
+        else
+        {
+            _styleTimer = 0f;
         }
     }
 
@@ -204,8 +238,9 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     void CheckSpin()
     {
-        if (Input.GetKeyDown(SpinKey) && State == States.Default)
+        if (STYLE >= SpinStyleCost && Input.GetKeyDown(SpinKey) && State == States.Default)
         {
+            STYLE -= SpinStyleCost;
             State = States.Spinning;
             _animationController.SetTrigger("spinning");
         }
@@ -218,14 +253,16 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
             {
                 spinTimer = 0f;
                 State = States.Default;
+                _animationController.SetTrigger("running");
             }
         }
     }
 
     void CheckTackle()
     {
-        if (Input.GetKeyDown(TackleKey) && State == States.Default)
+        if (STYLE >= TackleStyleCost && Input.GetKeyDown(TackleKey) && State == States.Default)
         {
+            STYLE -= TackleStyleCost;
             State = States.Tackling;
             _animationController.SetTrigger("tackling");
         }
@@ -239,6 +276,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
             {
                 tackleTimer = 0f;
                 State = States.Default;
+                _animationController.SetTrigger("running");
             }
         }
     }
