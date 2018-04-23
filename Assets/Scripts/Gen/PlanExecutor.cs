@@ -38,26 +38,29 @@ public class PlanExecutor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Player.transform.position.y >= YardageGoal * Field.YardLength)
+        if (Player != null)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-		foreach (Move move in ThePlan)
-        {
-            if (move.Yard <= Player.transform.position.y / Field.YardLength)
+            if (Player.transform.position.y >= YardageGoal * Field.YardLength)
             {
-                for (var i = 0; i < move.Enemies.Length; i++)
-                {
-                    createEnemy(move.Enemies[i], SpawnPoints[i % SpawnPoints.Count]);
-                }
-
-                TheExecutedPlan.Add(move);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
-        }
 
-        var completedMoves = TheExecutedPlan.Intersect(ThePlan);
-        ThePlan.RemoveAll((Move move) => completedMoves.Contains(move));
+            foreach (Move move in ThePlan)
+            {
+                if (move.Yard <= Player.transform.position.y / Field.YardLength)
+                {
+                    for (var i = 0; i < move.Enemies.Length; i++)
+                    {
+                        createEnemy(move.Enemies[i], SpawnPoints[i % SpawnPoints.Count]);
+                    }
+
+                    TheExecutedPlan.Add(move);
+                }
+            }
+
+            var completedMoves = TheExecutedPlan.Intersect(ThePlan);
+            ThePlan.RemoveAll((Move move) => completedMoves.Contains(move));
+        }
 	}
 
     private void createEnemy(EnemyType enemy, Vector3 position)

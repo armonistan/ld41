@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 212366300199457492}
   - component: {fileID: 95591188537317754}
   m_Layer: 0
-  m_Name: TestPlayer
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -117,6 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b2d344ef34e6f4fabe536146456cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeadPlayer: {fileID: 1497024785604142, guid: 904eb2ffa0c89504d8ead045de324537, type: 2}
   MoveLeft: 276
   MoveRight: 275
   MoveForward: 273

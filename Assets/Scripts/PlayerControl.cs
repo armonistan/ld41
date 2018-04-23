@@ -13,6 +13,8 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         StiffArming,
         Tackling
     }
+
+    public GameObject DeadPlayer;
 		
 	//directional controls
 	public KeyCode MoveLeft = KeyCode.LeftArrow;
@@ -90,10 +92,20 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 	        return;
 	    }*/
 
+        HandleDeath();
         UpdatePlayerMovementInput();
         UpdatePlayerSpecialInput();
         UpdatePlayerPosition();
 	}
+
+    private void HandleDeath()
+    {
+        if (BULK <= 0)
+        {
+            Instantiate(DeadPlayer, transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+        }
+    }
 
     private void UpdatePlayerPosition()
     {
@@ -284,7 +296,10 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("enter collide");
+        if (other.tag == "Edge")
+        {
+            BULK = 0;
+        }
     }
 
     void OnTriggerStay2D(Collider2D other)
