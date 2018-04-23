@@ -28,8 +28,13 @@ namespace Assets.Scripts
             else if (_currentlyPlaying.clip.name != _source.clip.name)
             {
                 _currentlyPlaying.Stop();
+                Destroy(_currentlyPlaying.gameObject);
+
                 _source.Play();
                 _currentlyPlaying = _source;
+            } else
+            {
+                Destroy(this.gameObject);
             }
         }
     }
