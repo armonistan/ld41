@@ -248,6 +248,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     {
         if (STYLE >= SpinStyleCost && Input.GetKeyDown(SpinKey) && State == States.Default)
         {
+            gameObject.GetComponents<AudioSource>()[0].Play();
             STYLE -= SpinStyleCost;
             State = States.Spinning;
             _animationController.SetTrigger("spinning");

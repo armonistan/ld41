@@ -19,6 +19,7 @@ public class PlanExecutor : MonoBehaviour {
     public Field Field;
 
     private Camera _camera;
+    private bool playTouchdown = true;
 
     public int YardageGoal
     {
@@ -44,6 +45,11 @@ public class PlanExecutor : MonoBehaviour {
         {
             if (Player.transform.position.y >= YardageGoal * Field.YardLength)
             {
+                if (playTouchdown) { 
+                    gameObject.GetComponent<AudioSource>().Play();
+                    playTouchdown = false;
+                }
+
                 GameData.getCurrentPlayer().recordYardsCovered(YardageGoal);
                 GameData.getCurrentPlayer().recordTouchdown();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
