@@ -86,4 +86,9 @@ public class PlanExecutor : MonoBehaviour {
         var foundEnemy = EnemyPrefabs.Find((EnemyMap map) => map.EnemyType == enemy);
         if (foundEnemy != null) { Instantiate(foundEnemy.EnemyPrefab, position + new Vector3(_camera.transform.position.x, _camera.transform.position.y), Quaternion.identity); }
     }
+
+    public bool HasScoredTouchDown()
+    {
+        return Player.transform.position.y >= YardageGoal * Field.YardLength;
+    }
 }
