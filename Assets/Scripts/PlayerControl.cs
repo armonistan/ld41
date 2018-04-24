@@ -131,6 +131,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
                 break;
             case PlayerAbilities.Abilities.Shephard:
                 TACKLE_DURATION *= 2;
+                SPEED_INCREASE /= 2;
                 break;
             default:
                 break;
@@ -234,7 +235,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         }
 
         //forward backward input
-        if (Input.GetKey(MoveBackward))
+        if (Input.GetKey(MoveBackward) && ability != PlayerAbilities.Abilities.Stylin)
         {
             if (_currentPlayerSpeedY > 0)
             {
@@ -281,7 +282,7 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     void CheckSpin()
     {
-        if (STYLE >= SpinStyleCost && Input.GetKeyDown(SpinKey) && State == States.Default)
+        if (STYLE >= SpinStyleCost && Input.GetKeyDown(SpinKey) && State == States.Default && ability != PlayerAbilities.Abilities.Unit)
         {
             gameObject.GetComponents<AudioSource>()[0].Play();
             if (ability == PlayerAbilities.Abilities.DidNotHit && UnityEngine.Random.value > .5)
