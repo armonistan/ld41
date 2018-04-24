@@ -89,6 +89,6 @@ public class PlanExecutor : MonoBehaviour {
 
     public bool HasScoredTouchDown()
     {
-        return Player.transform.position.y >= YardageGoal * Field.YardLength;
+        return !playTouchdown;
     }
 }
