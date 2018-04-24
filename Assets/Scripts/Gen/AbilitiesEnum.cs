@@ -21,6 +21,8 @@ namespace PlayerAbilities
         Stiffie,
         [StringValue("Shephard"), Description("I lead the chaerge. Tackles last twice as long, but you're half as quick."), CostMul("1.4")]
         Shephard,
+        [StringValue("Greased Lightnin'"), Description("I'm on ice! Like a speeding bullet! can't catch me! You're twice as fast, but have half as much dexterity."), CostMul("1.1")]
+        GreasedLightning,
     }
 
     public class StringValue : Attribute

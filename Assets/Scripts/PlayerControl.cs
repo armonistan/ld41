@@ -133,6 +133,13 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
                 TACKLE_DURATION *= 2;
                 SPEED_INCREASE /= 2;
                 break;
+            case PlayerAbilities.Abilities.GreasedLightning:
+                PlayerMaxSpeed *= 2;
+                _LEFT_X /= 2;
+                _RIGHT_X /= 2;
+                _BACKWARD_Y /= 2;
+                _FORWARD_Y /= 2;
+                break;
             default:
                 break;
         }
