@@ -45,7 +45,7 @@ public class PlayerSelection : MonoBehaviour {
                 playerCards[i].setSelected(true);
                 int price = ((PlayerStats)generatedPlayers[i]).getPrice();
                 costLabel.text = price.ToString("C0") + "\n" + (money-price).ToString("C0");
-                if (money - price > 0)
+                if (money - price >= 0)
                 {
                     button.interactable = true;
                     buttonText.color = Color.white;
