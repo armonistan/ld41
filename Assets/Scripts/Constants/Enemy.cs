@@ -224,7 +224,13 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void HurtPlayer(PlayerControl player)
     {
-        player.BULK--;
+        if (GameData.getCurrentPlayer().getAbility() == PlayerAbilities.Abilities.GoldenBoy)
+        {
+            player.BULK -= 2;
+        } else
+        {
+            player.BULK--;
+        }
         System.Random r = new System.Random();
         int soundIndex = (r.Next(1, 3));
         Debug.Log(soundIndex);

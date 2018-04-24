@@ -43,6 +43,10 @@ public class GameData : MonoBehaviour {
         if (currentPlayer != null)
         {
             hallOfFame.Add(currentPlayer);
+            if (currentPlayer.getAbility() == PlayerAbilities.Abilities.GoldenBoy)
+            {
+                money += currentPlayer.getCareerValue();
+            }
             money += currentPlayer.getCareerValue();
             currentPlayer = null;
         }

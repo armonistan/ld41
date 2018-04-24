@@ -25,6 +25,8 @@ namespace PlayerAbilities
         GreasedLightning,
         [StringValue("Blenderman"), Description("Spinning kills enemies. Cannot run left or right and you always move forward."), CostMul("1.4")]
         Blenderman,
+        [StringValue("Golden Boy"), Description("OOOoooOOOooh, shiny! Enemies do double damage, but you get double money."), CostMul("1.6")]
+        GoldenBoy,
     }
 
     public class StringValue : Attribute
