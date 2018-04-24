@@ -172,7 +172,6 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         if (BULK <= 0 && !planExecutor.HasScoredTouchDown())
         {
             GameData.getCurrentPlayer().recordYardsCovered(transform.position.y / FieldRenderer.YardLength);
-            GameData.setMoney(GameData.getMoney() + GameData.getCurrentPlayer().getCareerValue());
 
             Instantiate(DeadPlayer, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
