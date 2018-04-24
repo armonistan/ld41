@@ -15,7 +15,7 @@ namespace PlayerAbilities
         DidNotHit,
         [StringValue("Stylin'"), Description("Style points regenerate 2x faster. Cannot run backwards. If I can believe in the dinosaurs, then they can believe in me. I think about that and it makes me happy. Then, I bust out."), CostMul("1.4")]
         Stylin,
-        [StringValue("Absolute Unit"), Description("Look at the size of this lad. Regenerates Health over time, but you cannot spin."), CostMul("1.8")]
+        [StringValue("Absolute Unit"), Description("Look at the size of this lad. Regenerates Health over time, but you cannot spin."), CostMul("1.4")]
         Unit,
         [StringValue("Stiffie"), Description("Harder than a boiled egg. A hardboiled egg. Stiff arms can hold for twice as long."), CostMul("1.1")]
         Stiffie,
@@ -29,6 +29,8 @@ namespace PlayerAbilities
         GoldenBoy,
         [StringValue("Double Penetration"), Description("Innuendo? But I barely know her! Stiff-armed enemies will go through enemies when tossed."), CostMul("1.3")]
         DoublePen,
+        [StringValue("Annihilator"), Description("One health. Infinite Style. I'm an annihilator. I'll slice and dice your avatar."), CostMul("1.7")]
+        Annihilator,
     }
 
     public class StringValue : Attribute

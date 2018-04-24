@@ -35,7 +35,7 @@ public class GameData : MonoBehaviour {
 
     public static PlayerStats getCurrentPlayer()
     {
-        return currentPlayer != null ? currentPlayer : new PlayerStats("Test", "123", 5, 5, 5, 0, PlayerAbilities.Abilities.DoublePen, "4.20", "5");
+        return currentPlayer != null ? currentPlayer : new PlayerStats("Test", "123", 5, 5, 5, 0, PlayerAbilities.Abilities.Annihilator, "4.20", "5");
     }
 
     public static void retireCurrentPlayer()

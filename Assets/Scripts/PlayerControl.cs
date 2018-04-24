@@ -140,6 +140,9 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
                 _BACKWARD_Y /= 2;
                 _FORWARD_Y /= 2;
                 break;
+            case PlayerAbilities.Abilities.Annihilator:
+                BULK = 1;
+                break;
             default:
                 break;
         }
@@ -180,6 +183,10 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
 
     private void HandleStyle()
     {
+        if (ability == PlayerAbilities.Abilities.Annihilator)
+        {
+            STYLE = MaxStyle;
+        }
         if (STYLE < MaxStyle)
         {
             if (_styleTimer < StyleChargeTime)
