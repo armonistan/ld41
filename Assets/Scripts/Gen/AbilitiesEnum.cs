@@ -11,13 +11,13 @@ namespace PlayerAbilities
     {
         [StringValue("Free Agent"), Description("Doesn't cost anything to recruit, but you get what you pay for.")]
         FreeAgent,
-        [StringValue("I Did Not Hit Her"), Description("I did not. Break out of tackles 20% easier.")]
+        [StringValue("I Did Not Hit Her"), Description("I did not. And she did not hit me. Nothing hit me. Nothing can ever hit me. Spins have 50% chance to not use style points.")]
         DidNotHit,
-        [StringValue("Stylin'"), Description("Has an extra style point. If I can believe in the dinosaurs, then they can believe in me. I think about that and it makes me happy. Then, I bust out.")]
+        [StringValue("Stylin'"), Description("Style points regenerate 2x faster. If I can believe in the dinosaurs, then they can believe in me. I think about that and it makes me happy. Then, I bust out.")]
         Stylin,
-        [StringValue("Absolute Unit"), Description("Look at the size of this lad. Nothing can topple him. Break out of tackles 60% easier.")]
+        [StringValue("Absolute Unit"), Description("Look at the size of this lad. Nothing can topple him. Regenerates Health over time.")]
         Unit,
-        [StringValue("Stiffie"), Description("Harder than a boiled egg. A hardboiled egg. Really hard. Like you wouldn't believe. Stiff arms are 30% stronger.")]
+        [StringValue("Stiffie"), Description("Harder than a boiled egg. A hardboiled egg. Really hard. Like you wouldn't believe. Stiff arms can hold for twice as long.")]
         Stiffie,
     }
 
