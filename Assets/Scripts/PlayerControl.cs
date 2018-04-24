@@ -155,7 +155,10 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
                 _bulkTimer = 0f;
             }
         }
-        if (BULK <= 0)
+
+        var planExecutor = FindObjectOfType<PlanExecutor>();
+
+        if (BULK <= 0 && !planExecutor.HasScoredTouchDown())
         {
             GameData.getCurrentPlayer().recordYardsCovered(transform.position.y / FieldRenderer.YardLength);
             GameData.setMoney(GameData.getMoney() + GameData.getCurrentPlayer().getCareerValue());
