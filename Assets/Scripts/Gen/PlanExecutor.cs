@@ -47,14 +47,15 @@ public class PlanExecutor : MonoBehaviour {
         {
             if (Player.transform.position.y >= YardageGoal * Field.YardLength)
             {
-                if (playTouchdown) { 
+                if (playTouchdown) {
                     gameObject.GetComponent<AudioSource>().Play();
                     playTouchdown = false;
-                }
 
-                GameData.getCurrentPlayer().recordYardsCovered(YardageGoal);
-                GameData.getCurrentPlayer().recordTouchdown();
+                    GameData.getCurrentPlayer().recordYardsCovered(YardageGoal);
+                    GameData.getCurrentPlayer().recordTouchdown();
+                }
                 if (loadTimer > -1) loadTimer+=Time.deltaTime;
+
 
                 if (loadTimer >= loadTime)
                 {
