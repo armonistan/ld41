@@ -20,8 +20,8 @@ public class PlanExecutor : MonoBehaviour {
 
     private Camera _camera;
     private bool playTouchdown = true;
-    private int loadTime = 50;
-    private int loadTimer = 0;
+    private float loadTime = 1.9f;
+    private float loadTimer = 0;
 
     public int YardageGoal
     {
@@ -54,7 +54,7 @@ public class PlanExecutor : MonoBehaviour {
 
                 GameData.getCurrentPlayer().recordYardsCovered(YardageGoal);
                 GameData.getCurrentPlayer().recordTouchdown();
-                if (loadTimer > -1) loadTimer++;
+                if (loadTimer > -1) loadTimer+=Time.deltaTime;
 
                 if (loadTimer >= loadTime)
                 {
