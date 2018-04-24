@@ -23,6 +23,10 @@ namespace PlayerAbilities
         Shephard,
         [StringValue("Greased Lightnin'"), Description("I'm on ice! Like a speeding bullet! can't catch me! You're twice as fast, but have half as much dexterity."), CostMul("1.1")]
         GreasedLightning,
+        [StringValue("Blenderman"), Description("Spinning kills enemies. Cannot run left or right and you always move forward."), CostMul("1.4")]
+        Blenderman,
+        [StringValue("Golden Boy"), Description("OOOoooOOOooh, shiny! Enemies do double damage, but you get double money."), CostMul("1.6")]
+        GoldenBoy,
     }
 
     public class StringValue : Attribute
