@@ -13,13 +13,13 @@ namespace PlayerAbilities
         FreeAgent,
         [StringValue("I Did Not Hit Her"), Description("I did not. And she did not hit me. Nothing hit me. Nothing can ever hit me. Spins have 50% chance to not use style points."), CostMul("1.1")]
         DidNotHit,
-        [StringValue("Stylin'"), Description("Style points regenerate 2x faster. If I can believe in the dinosaurs, then they can believe in me. I think about that and it makes me happy. Then, I bust out."), CostMul("1.4")]
+        [StringValue("Stylin'"), Description("Style points regenerate 2x faster. Cannot run backwards. If I can believe in the dinosaurs, then they can believe in me. I think about that and it makes me happy. Then, I bust out."), CostMul("1.4")]
         Stylin,
-        [StringValue("Absolute Unit"), Description("Look at the size of this lad. Nothing can topple him. Regenerates Health over time."), CostMul("1.8")]
+        [StringValue("Absolute Unit"), Description("Look at the size of this lad. Regenerates Health over time, but you cannot spin."), CostMul("1.8")]
         Unit,
-        [StringValue("Stiffie"), Description("Harder than a boiled egg. A hardboiled egg. Really hard. Like you wouldn't believe. Stiff arms can hold for twice as long."), CostMul("1.1")]
+        [StringValue("Stiffie"), Description("Harder than a boiled egg. A hardboiled egg. Stiff arms can hold for twice as long."), CostMul("1.1")]
         Stiffie,
-        [StringValue("Shephard"), Description("I lead the chaerge. Tackles last twice as long."), CostMul("1.4")]
+        [StringValue("Shephard"), Description("I lead the chaerge. Tackles last twice as long, but you're half as quick."), CostMul("1.4")]
         Shephard,
     }
 
