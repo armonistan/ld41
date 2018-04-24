@@ -62,11 +62,17 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     public int SpinStyleCost = 1;
     public int StiffArmStyleCost = 3;
 
+    public float BulkChargeTime = 8f;
+    private int MaxBulk = 5;
+    private float _bulkTimer = 0f;
+
     public int STYLE = 5;
     public int BULK = 5;
 
     float JukeButtonCooldown = 0.5f ; // Half a second before reset
     int JukeButtonCount = 0;
+
+    private PlayerAbilities.Abilities ability;
 
     public Vector2 Velocity
     {
@@ -111,12 +117,44 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         var stats = GameData.getCurrentPlayer();
 
         STYLE = MaxStyle = stats.getStyle();
-        BULK = stats.getBulk();
+        BULK = MaxBulk = stats.getBulk();
         PlayerMaxSpeed = stats.getSpeed() * MaxSpeedModifier + MinMaxSpeed;
+        ability = stats.getAbility();
+
+        switch(ability)
+        {
+            case PlayerAbilities.Abilities.Stylin:
+                StyleChargeTime /= 2;
+                break;
+            case PlayerAbilities.Abilities.Stiffie:
+                STIFF_ARM_DURATION *= 2;
+                break;
+            default:
+                break;
+        }
     }
 
     private void HandleBulk()
     {
+        if (ability == PlayerAbilities.Abilities.Unit)
+        {
+            if (BULK < MaxBulk)
+            {
+                if (_bulkTimer < BulkChargeTime)
+                {
+                    _bulkTimer += Time.deltaTime;
+                }
+                else
+                {
+                    BULK++;
+                    _bulkTimer = 0f;
+                }
+            }
+            else
+            {
+                _bulkTimer = 0f;
+            }
+        }
         if (BULK <= 0)
         {
             GameData.getCurrentPlayer().recordYardsCovered(transform.position.y / FieldRenderer.YardLength);
@@ -243,7 +281,13 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
         if (STYLE >= SpinStyleCost && Input.GetKeyDown(SpinKey) && State == States.Default)
         {
             gameObject.GetComponents<AudioSource>()[0].Play();
-            STYLE -= SpinStyleCost;
+            if (ability == PlayerAbilities.Abilities.DidNotHit && UnityEngine.Random.value > .5)
+            {
+                // no cost for this
+            } else
+            {
+                STYLE -= SpinStyleCost;
+            }
             State = States.Spinning;
             _animationController.SetTrigger("spinning");
         }
