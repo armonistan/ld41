@@ -67,7 +67,8 @@ public class PlayerGenerator : MonoBehaviour {
     {
         PointAllocation points = generateStats(5000f, (int)Random.Range(0, 15));
         int basePrice = 100000;
-        PlayerStats stats = new PlayerStats(generateName(), generateNumber(), points.speed, points.bulk, points.style, (int) (basePrice * points.cost_multiplier), AbilitiesEnum.getRandom(), getHeight(), getWeight());
+        PlayerAbilities.Abilities ability = AbilitiesEnum.getRandom();
+        PlayerStats stats = new PlayerStats(generateName(), generateNumber(), points.speed, points.bulk, points.style, (int) (basePrice * points.cost_multiplier * AbilitiesEnum.GetCostMultiplier(ability)), ability, getHeight(), getWeight());
         PlayerCard maybeCard = passOn.GetComponent<PlayerCard>();
         if(maybeCard != null)
         {
@@ -90,11 +91,11 @@ public class PlayerGenerator : MonoBehaviour {
         {
             basePrice = 100000;
             ability = AbilitiesEnum.getRandom();
-            float maxMultiplier = (price * 1.0f) / (basePrice * 1.0f);
+            float maxMultiplier = (price * 1.0f) / (basePrice * 1.4f);
             points = generateStats(maxMultiplier, (int)Random.Range(0, 15));
         }
 
-        PlayerStats stats = new PlayerStats(generateName(), generateNumber(), points.speed, points.bulk, points.style, (int)(basePrice * points.cost_multiplier), ability, getHeight(), getWeight());
+        PlayerStats stats = new PlayerStats(generateName(), generateNumber(), points.speed, points.bulk, points.style, (int)(basePrice * points.cost_multiplier * AbilitiesEnum.GetCostMultiplier(ability)), ability, getHeight(), getWeight());
         return stats;
     }
 

@@ -129,6 +129,9 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
             case PlayerAbilities.Abilities.Stiffie:
                 STIFF_ARM_DURATION *= 2;
                 break;
+            case PlayerAbilities.Abilities.Shephard:
+                TACKLE_DURATION *= 2;
+                break;
             default:
                 break;
         }
