@@ -27,6 +27,8 @@ namespace PlayerAbilities
         Blenderman,
         [StringValue("Golden Boy"), Description("OOOoooOOOooh, shiny! Enemies do double damage, but you get double money."), CostMul("1.6")]
         GoldenBoy,
+        [StringValue("Double Penetration"), Description("Innuendo? But I barely know her! Stiff-armed enemies will go through enemies when tossed."), CostMul("1.3")]
+        DoublePen,
     }
 
     public class StringValue : Attribute

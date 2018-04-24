@@ -174,7 +174,13 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
     {
         if (other.tag == "Edge" || other.tag == "Enemy")
         {
-            Die();
+            if (State == States.StiffArmedTossed && GameData.getCurrentPlayer().getAbility() == PlayerAbilities.Abilities.DoublePen)
+            {
+                //don't do anything here
+            } else
+            {
+                Die();
+            }
         }
     }
 
