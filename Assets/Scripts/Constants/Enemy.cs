@@ -239,7 +239,11 @@ public class Enemy : StatefulMonoBehavior<Enemy.States>
 
     protected virtual void HandlePlayerSpinning()
     {
-        Debug.Log("He is Spinning Two FAST");
+        if (GameData.getCurrentPlayer().getAbility() == PlayerAbilities.Abilities.Blenderman)
+        {
+            GameData.getCurrentPlayer().recordBrokenTackle();
+            Die();
+        }
     }
 
     protected virtual void Die()

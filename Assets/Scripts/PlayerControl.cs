@@ -205,6 +205,21 @@ public class PlayerControl : StatefulMonoBehavior<PlayerControl.States>
     }
 
     void UpdatePlayerMovementInput() {
+        if (ability == PlayerAbilities.Abilities.Blenderman)
+        {
+            if (_currentPlayerSpeedY < 0)
+            {
+                _currentPlayerSpeedY += SPEED_DECAY + SPEED_INCREASE;
+            }
+            else if (Math.Abs(_currentPlayerSpeedY) < PlayerMaxSpeed)
+            {
+                _currentPlayerVector.y = _FORWARD_Y;
+                _currentPlayerSpeedY += SPEED_INCREASE;
+            }
+
+            return;
+        }
+
         //left right input
         if (Input.GetKey(MoveLeft))
         {
