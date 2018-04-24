@@ -11,11 +11,15 @@ public class PlayerSelection : MonoBehaviour {
     private int money;
     public Text budgetLabel;
     public Text costLabel;
+    public Button button;
+    public Text buttonText;
     private ArrayList generatedPlayers;
     private int selected = -1;
 
 	// Use this for initialization
 	void Start () {
+        buttonText.color = Color.gray;
+        button.interactable = false;
         money = GameData.getMoney();
         generatedPlayers = new ArrayList();
         PlayerStats gen = PlayerGenerator.generate(0);
@@ -41,6 +45,15 @@ public class PlayerSelection : MonoBehaviour {
                 playerCards[i].setSelected(true);
                 int price = ((PlayerStats)generatedPlayers[i]).getPrice();
                 costLabel.text = price.ToString("C0") + "\n" + (money-price).ToString("C0");
+                if (money - price > 0)
+                {
+                    button.interactable = true;
+                    buttonText.color = Color.white;
+                } else
+                {
+                    button.interactable = false;
+                    buttonText.color = Color.gray;
+                }
             } else
             {
                 playerCards[i].setSelected(false);

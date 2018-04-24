@@ -60,8 +60,8 @@ public class PlayerGenerator : MonoBehaviour {
         "WOOD"
     };
 
-    static MarkovNameGenerator firstNameGen = new MarkovNameGenerator(firstNames, 3, 3);
-    static MarkovNameGenerator lastNameGen = new MarkovNameGenerator(lastNames, 3, 5);
+    static MarkovNameGenerator firstNameGen = new MarkovNameGenerator(firstNames, 2, 4);
+    static MarkovNameGenerator lastNameGen = new MarkovNameGenerator(lastNames, 2, 6);
 
     public void generate(GameObject passOn)
     {
